@@ -48,8 +48,8 @@ TBC
 Clone the repository and install the dependencies:
 
 ```bash
-git clone https://github.com/your-username/sigma-school-final-project.git
-cd sigma-school-final-project
+git clone https://github.com/your-username/music-space-api.git
+cd music-space-api
 npm install
 ```
 
