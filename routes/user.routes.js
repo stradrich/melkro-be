@@ -11,7 +11,7 @@ router.post(
     '/',
     verifyToken,
     // NEED TO ARGUE ABOUT THIS ‼️
-    checkRole(['admin','provider','customer']),
+    checkRole(['admin']),
     userController.createUser 
 )
 
@@ -29,6 +29,7 @@ router.get(
     verifyToken,
     checkRole(['admin','provider']),
     userController.getUserById)
+
 
 // CRUD - UPDATE
 router.put(
