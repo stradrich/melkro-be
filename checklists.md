@@ -7,8 +7,8 @@
 │   ├── auth.controller.js ✅ 14/08/2023
 │   ├── booking.controller.js
 │   ├── listing.controller.js
-│   ├── messaging.controller.js
-│   ├── payment.controller.js
+│   ├── messaging.controller.js ⏭
+│   ├── payment.controller.js ✅ 20/08/2023 🛠
 │   └── RnR.controller.js
 │   └── user.controller.js ✅ 17/08/2023 🛠
 ├── db
@@ -28,8 +28,8 @@
 │   ├── auth.routes.js ✅ 14/08/2023 🛠
 │   ├── booking.routes.js
 │   ├── listing.routes.js
-│   ├── messaging.routes.js
-│   ├── payment.routes.js
+│   ├── messaging.routes.js ⏭
+│   ├── payment.routes.js ✅ 20/08/2023 🛠
 │   └── RnR.routes.js
 │   └── user.routes.js ✅ 18/08/2023 🛠
 │   └── websocket.routes.js ✅ 18/08/2023 🛠

@@ -15,13 +15,16 @@ function verifyToken(req, res, next) {
 
     // Set user in the request object
     req.user = decoded
+
+      // If all OK - proceed to next middleware(if any)
+      return next()
+
         
     } catch (error) {
-        return res.status(401),json({error: error})
+        return res.status(401).json({error: error})
     }
 
-    // If all OK - proceed to next middleware(if any)
-    return next()
+ 
 }
 
 function checkRoles(roles) {
@@ -37,5 +40,6 @@ function checkRoles(roles) {
 
 module.exports = {
     verifyToken,
-    checkRoles
+    checkRoles,
+    login
 }

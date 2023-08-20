@@ -49,6 +49,7 @@ const messagingRoutes = require("./routes/messaging.routes.js")
 const paymentRoutes = require("./routes/payment.routes.js")
 const RnRRoutes = require("./routes/RnR.routes.js")
 const userRoutes = require("./routes/user.routes.js")
+const websocketRoutes = require("./routes/websocket.routes.js")
 
 // I'm using plural for the routes...(hierarchy, higher you see more, lower you see less, authentication at play)
 app.use("/auth", authRoutes)
@@ -58,6 +59,7 @@ app.use("/messaging", messagingRoutes)
 app.use("/payment", paymentRoutes)
 app.use("/reviews-ratings", RnRRoutes)
 app.use("/users", userRoutes)
+app.use("/websocket", websocketRoutes)
 
 
 // Health routes (Application monitoring, load balancing, automatic recovery & scaling, diagnostics & troubleshooting, third-party integration, transparent communication, customizable indicators)

@@ -30,6 +30,7 @@ CREATE TABLE space_listings (
 CREATE TABLE bookings (
   booking_id INT PRIMARY KEY AUTO_INCREMENT,
   user_id INT NOT NULL,
+  listing_id INT NOT NULL, -- Added listing_id
   status ENUM('pending', 'confirmed', 'cancelled', 'declined') DEFAULT 'pending',
   reminder ENUM('24_hours', '12_hours', '6_hours', '3_hours', '45_minutes'),
   check_in TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -41,7 +42,8 @@ CREATE TABLE bookings (
   capacity ENUM('individual', 'less than four', 'band/orchestra'),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  FOREIGN KEY (user_id) REFERENCES users(user_id)
+  FOREIGN KEY (user_id) REFERENCES users(user_id),
+  FOREIGN KEY (listing_id) REFERENCES space_listings(listing_id) -- Added listing_id reference
 );
 
 -- Create instrument_services Table
