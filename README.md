@@ -101,7 +101,7 @@ TBC
 
 ## Copyright
 
-Copyright (c) [2023] [Aldrich Pinso]
+Copyright (c) 2023 Aldrich Pinso
 
 
 ## File Structure
