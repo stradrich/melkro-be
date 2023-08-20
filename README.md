@@ -105,6 +105,8 @@ Copyright (c) [2023] [Aldrich Pinso]
 
 
 ## File Structure
+
+```
 .
 ├── configs 
 │   └── db.config.js 
@@ -148,6 +150,7 @@ Copyright (c) [2023] [Aldrich Pinso]
 ├── Dockerfile.prod
 ├── index.js 
 ├── package-lock.json
-└── package.json 
+└── package.json
+```
 
 
