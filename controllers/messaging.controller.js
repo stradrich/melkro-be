@@ -72,7 +72,7 @@ const getConversation = async (req, res) => {
 
         // Return the conversation messages
         res.status(200).json({ conversation: conversationMessages });
-    } catch (error) {
+    } catch (error) {s
         // Handle errors
         console.error("Error retrieving conversation:", error);
         res.status(500).json({ error: "An error occurred while retrieving the conversation" });

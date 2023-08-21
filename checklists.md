@@ -5,8 +5,8 @@
 │   ├──  websocket 
 │   │    └── websocket.controller.js ✅ 18/08/2023 🛠 (need to implement logic on client side because it resides on the frontend side more)  
 │   ├── auth.controller.js ✅ 14/08/2023
-│   ├── booking.controller.js
-│   ├── listing.controller.js
+│   ├── booking.controller.js 🏗
+│   ├── listing.controller.js  ✅ 21/08/2023
 │   ├── messaging.controller.js ✅ 21/08/2023 
 │   ├── payment.controller.js ✅ 20/08/2023 🛠
 │   └── RnR.controller.js
@@ -26,8 +26,8 @@
 ├── node_modules
 ├── routes
 │   ├── auth.routes.js ✅ 14/08/2023 🛠
-│   ├── booking.routes.js
-│   ├── listing.routes.js
+│   ├── booking.routes.js 🏗
+│   ├── listing.routes.js ✅ 21/08/2023 
 │   ├── messaging.routes.js ✅ 20/08/2023 🛠
 │   ├── payment.routes.js ✅ 20/08/2023 🛠
 │   └── RnR.routes.js
