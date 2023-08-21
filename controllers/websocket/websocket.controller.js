@@ -21,3 +21,6 @@ wss.on('connection', (ws) => {
     });
 })
 
+module.exports = {
+    wss
+}

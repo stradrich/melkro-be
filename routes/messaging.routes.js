@@ -10,5 +10,20 @@
 
 const express = require('express')
 const router = express.Router()
-const messagingController = require('../controllers/messaging.controller')
+const { checkRoles, login } = require("../middlewares/auth.middleware");
+const MessagingController = require('../controllers/messaging.controller')
 // implement your middleware here
+
+// CRUD
+// CREATE
+router.post('/send-message',login, checkRoles(['admin','provider','customer']),MessagingController.sendMessage)
+// READ
+router.get('/read-messages',login, checkRoles(['admin']),MessagingController.getConversation)
+router.get('/read-messageId',login, checkRoles(['admin','provider','customer']),MessagingController.getConversationsForUser)
+// UPDATE
+router.put('/update-messageId',login, checkRoles(['admin','provider','customer']),MessagingController.getConversationsForUser)
+// DELETE
+router.post('/delete-messageId',login, checkRoles(['admin']),MessagingController.getConversation)
+
+
+module.exports = router; 
