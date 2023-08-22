@@ -1,4 +1,4 @@
-const User = require("/models/User");
+const User = require("../models/User");
 const { hashPassword } = require("../utils/bcrypt.util.js");
 // CREATE
 // Authorization on create new user 

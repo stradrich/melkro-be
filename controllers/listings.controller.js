@@ -1,4 +1,4 @@
-const SpaceListing = require("/models/Listing");
+const SpaceListing = require("../models/Listing");
 
 // create listing
 

@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const morgan = require("morgan")
 
+
 // Load environment variables. See .env file for available variables.
 // This should be done before loading variables from process.env
 require("dotenv").config({
@@ -77,7 +78,7 @@ app.listen(port, async () => {
     try {
         await sequelize.authenticate();
         console.log(" 🍾 Connection has been established successfully");
-        console.log(`🚀 Server is running on port ${PORT}`)
+        console.log(`🚀 Server is running on port ${ port }`)
     } catch (error) {
         console.log(" 🧐 Unable to connect to the database:", error);
     }

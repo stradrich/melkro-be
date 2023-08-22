@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const userController = require('../controllers/user.controller')
 // implement your middleware here
-const { verifyToken, checkRole } = require("../middlewares/auth.middleware")
+const { login, verifyToken, checkRoles } = require("../middlewares/auth.middleware")
 
 
 // CRUD - CREATE
@@ -11,7 +11,7 @@ router.post(
     '/',
     verifyToken,
     // NEED TO ARGUE ABOUT THIS ‼️
-    checkRole(['admin']),
+    checkRoles(['admin']),
     userController.createUser 
 )
 
@@ -20,14 +20,14 @@ router.post(
 router.get(
     '/', 
     verifyToken,
-    checkRole(['admin']),
+    checkRoles(['admin']),
     userController.getAllUsers)
 
 // 2. GET SPECIFIC 
 router.get(
     '/:userId', 
     verifyToken,
-    checkRole(['admin','provider']),
+    checkRoles(['admin','provider']),
     userController.getUserById)
 
 
@@ -35,7 +35,7 @@ router.get(
 router.put(
     '/:userId',
     verifyToken,
-    checkRole(['admin','provider','customer']),
+    checkRoles(['admin','provider','customer']),
     userController.updateUser
 )
 
@@ -43,7 +43,7 @@ router.put(
 router.delete(
     '/:userId',
     verifyToken,
-    checkRole(['admin','provider','customer']),
+    checkRoles(['admin','provider','customer']),
     userController.deleteUser
 )
 
