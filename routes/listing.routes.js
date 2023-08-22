@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const listingController = require('../controllers/listings.controller')
 // implement your middleware here
-const { login, verifyToken, checkRoles } = require("../middlewares/auth.middleware")
+const { verifyToken, checkRoles } = require("../middlewares/auth.middleware")
 
 // Create a new listing
 router.post('/listings', verifyToken, checkRoles(['admin', 'provider']),listingController.createListing);

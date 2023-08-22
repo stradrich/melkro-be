@@ -20,6 +20,8 @@ router.post('/register', async (req, res) => {
     }
 });
 
+
+router.post('/register', authController.register)
 router.post('/verify', authController.verifyEmail)
 router.post('/login', authController.login)
 

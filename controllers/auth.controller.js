@@ -9,8 +9,10 @@ const { hashPassword, comparePassword } = require("../utils/bcrypt.util.js")
 const { mg } = require("../utils/mailgun.util.js");
 const { where } = require("sequelize");
 
+
 async function register(req, res) {
     try { 
+        console.log('Registering a user...');
     // Database already unique
     // Add another layer to check if user with same email already exist 
     const userExist = await User.findOne({
