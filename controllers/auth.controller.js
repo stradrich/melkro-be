@@ -1,16 +1,12 @@
-// User Registration and Authentication
-// - Implement user model
-// - Implement user registration
-// - implement user login
-
 const jwt = require("jsonwebtoken");
+// - Implement user model
 const User = require("../models/User");
-const { hashPassword, comparePassword } = require("../utils/bcrypt.util.js")
+const { hashedPassword, comparePassword } = require("../utils/bcrypt.util.js")
 const { mg } = require("../utils/mailgun.util.js");
-const { where } = require("sequelize");
 
-
+// - Implement user registration and authentication
 async function register(req, res) {
+   
     try { 
         console.log('Registering a user...');
     // Database already unique
@@ -27,7 +23,7 @@ async function register(req, res) {
 
     // Create user using data from request body.
     // Request body must contain all required fields defined in User model.
-    const hashedPassword = hashPassword(req.body.password);
+    const hashPassword = hashedPassword(req.body.password);
     const user = await User.create({
         ...req.body,
         password: hashPassword,
@@ -175,6 +171,7 @@ async function verifyEmail(req, res) {
 //     }
 // }
 
+// - implement user login
 async function login(req, res) {
     try {
         // Get user input
