@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const bookingController = require('../controllers/booking.controller')
 // implement your middleware here
-const { login, verifyToken, checkRoles} = require('../middlewares/auth.middleware')
+const { verifyToken, checkRoles} = require('../middlewares/auth.middleware')
 
 // Create a new booking
 router.post('/bookings', verifyToken, checkRoles(['admin', 'provider', 'customer']), bookingController.createBooking);

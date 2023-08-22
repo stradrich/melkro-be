@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const RnRController = require('../controllers/RnR.controller')
 // implement your middleware here
-const { login, verifyToken, checkRoles }= require('../middlewares/auth.middleware'); // Adjust the path based on your project structure
+const { verifyToken, checkRoles }= require('../middlewares/auth.middleware'); // Adjust the path based on your project structure
 
 // Create a new review and rating
 router.post('/reviews', verifyToken, checkRoles(['admin', 'provider', 'customer']), RnRController.createReviewRating);
