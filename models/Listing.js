@@ -47,11 +47,11 @@ const SpaceListing = sequelize.define(
                 max: 5
             }
         },
-        created_at: {
+        createdAt: {
             type: DataTypes.DATE,
             defaultValue: DataTypes.NOW
         },
-        updated_at: {
+        updatedAt: {
             type: DataTypes.DATE,
             defaultValue: DataTypes.NOW,
             onUpdate: DataTypes.NOW
