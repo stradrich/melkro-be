@@ -25,6 +25,15 @@ const Payment = sequelize.define(
         payment_method: {
             type: DataTypes.STRING(255),
             allowNull: false
+        },
+        createdAt: {
+            type: DataTypes.DATE,
+            defaultValue: DataTypes.NOW
+        },
+        updatedAt: {
+            type: DataTypes.DATE,
+            defaultValue: DataTypes.NOW,
+            onUpdate: DataTypes.NOW
         }
     }
 );

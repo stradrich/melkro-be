@@ -42,11 +42,11 @@ const Booking = sequelize.define(
         capacity: {
             type: DataTypes.ENUM('individual', 'less than four', 'band/orchestra')
         },
-        created_at: {
+        createdAt: {
             type: DataTypes.DATE,
             defaultValue: DataTypes.NOW
         },
-        updated_at: {
+        updatedAt: {
             type: DataTypes.DATE,
             defaultValue: DataTypes.NOW,
             onUpdate: DataTypes.NOW

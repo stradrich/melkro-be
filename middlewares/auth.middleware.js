@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken")
 // This is not used.... 🛠
 const { login } = require("../controllers/auth.controller")
 
+
 function verifyToken(req, res, next) {
     // Get auth header value
     const token = req.headers["authorization"]

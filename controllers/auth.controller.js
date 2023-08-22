@@ -133,33 +133,77 @@ async function verifyEmail(req, res) {
     }
 }
 
+// async function login(req, res) {
+//     try {
+//         // Get user input
+//         const { email, password } = req.body;
+
+//         // Validate user input
+//         if (!email && password) {
+//             // This will go to the catch block
+//             throw "Email and password are required"
+//         }
+
+//         const user = await User.findAll({
+//             where: {
+//                 email: email
+//             }
+//         })
+
+//         if (!user) throw `User doest not exist. Please sign up.`
+
+//         // Validate if user password is correct
+//         const matchingPwd = comparePassword(password, user.password);
+
+//         if (!matchingPwd) throw "Invalid login credentials";
+
+//         //  Generate JWT
+//         const token = jwt.sign(
+//             {id: user.id, email: user.email, role:user.role },
+//             process.env.SECRET_KEY,
+//             {
+//                 // expiresIn: "2h",
+//                 algorithm: "HS256",
+//             }
+//         );
+
+//         res.status(200).json({ accessToken: token});
+//     } catch (error) {
+//         res.status(500).json({ error: error});
+//     }
+// }
+
 async function login(req, res) {
     try {
         // Get user input
         const { email, password } = req.body;
 
         // Validate user input
-        if (!email && password) {
-            // This will go to the catch block
-            throw "Email and password are required"
+        if (!email || !password) {
+            // Use || here instead of &&
+            throw "Email and password are required";
         }
 
-        const user = await User.findAll({
+        const user = await User.findOne({
             where: {
                 email: email
             }
-        })
+        });
 
-        if (!user) throw `User doest not exist. Please sign up.`
+        if (!user) {
+            throw "User does not exist. Please sign up.";
+        }
 
         // Validate if user password is correct
         const matchingPwd = comparePassword(password, user.password);
 
-        if (!matchingPwd) throw "Invalid login credentials";
+        if (!matchingPwd) {
+            throw "Invalid login credentials";
+        }
 
         //  Generate JWT
         const token = jwt.sign(
-            {id: user.id, email: user.email, role:user.role },
+            { id: user.id, email: user.email, role: user.role },
             process.env.SECRET_KEY,
             {
                 // expiresIn: "2h",
@@ -167,11 +211,12 @@ async function login(req, res) {
             }
         );
 
-        res.status(200).json({ accessToken: token});
+        res.status(200).json({ accessToken: token });
     } catch (error) {
-        res.status(500).json({ error: error});
+        res.status(500).json({ error: error });
     }
 }
+
 
 module.exports = {
     register,

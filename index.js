@@ -30,7 +30,9 @@ const morganConfig = morgan(function (token, req, res) {
         JSON.stringify(req.body),
         JSON.stringify(req.params),
         JSON.stringify(req.query),
-        tokens.date(req, res, "iso"),
+        morgan.token('date', (req, res, format) => {
+            return new Date().toISOString();
+        }),
         req.headers["user-agent"],
     ].join("");
 })

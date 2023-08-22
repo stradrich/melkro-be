@@ -2,7 +2,7 @@ const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db.config');
 
 const Users = sequelize.define(
-    "User",
+    "user",
     {
         user_id: {
             type: DataTypes.INTEGER,
@@ -31,11 +31,11 @@ const Users = sequelize.define(
             type: DataTypes.ENUM('admin', 'provider', 'customer'),
             defaultValue: 'customer'
         },
-        created_at: {
+        createdAt: {
             type: DataTypes.DATE,
             defaultValue: DataTypes.NOW
         },
-        updated_at: {
+        updatedAt: {
             type: DataTypes.DATE,
             defaultValue: DataTypes.NOW,
             onUpdate: DataTypes.NOW
