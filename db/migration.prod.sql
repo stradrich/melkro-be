@@ -1,3 +1,6 @@
+CREATE DATABASE music_space_prod;
+USE music_space_prod;
+
 -- Create users Table (musician, provider, admin)
 CREATE TABLE users (
   user_id INT PRIMARY KEY AUTO_INCREMENT,

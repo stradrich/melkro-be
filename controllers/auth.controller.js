@@ -4,7 +4,7 @@
 // - implement user login
 
 const jwt = require("jsonwebtoken");
-const User = require("/models/User");
+const User = require("../models/User");
 const { hashPassword, comparePassword } = require("../utils/bcrypt.util.js")
 const { mg } = require("../utils/mailgun.util.js");
 const { where } = require("sequelize");

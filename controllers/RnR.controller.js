@@ -5,7 +5,7 @@
 
 
 // reviewRating.controller.js
-const ReviewRating = require('../models/ReviewRating');
+const ReviewRating = require('../models/RnR');
 
 // Create a new review and rating
 async function createReviewRating(req, res) {
