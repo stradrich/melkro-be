@@ -68,6 +68,28 @@ async function deleteReviewRating(req, res) {
     }
 }
 
+// Calculate ratings
+// async function calculateAverageRatings(req, res) {
+//     try {
+//       const averageRatings = await SpaceListing.findAll({
+//         attributes: ['listing_id'],
+//         include: [
+//           {
+//             model: ReviewsRating,
+//             attributes: [
+//               [sequelize.fn('AVG', sequelize.col('rating')), 'average_rating'],
+//             ],
+//           },
+//         ],
+//         group: ['space_listings.listing_id'],
+//       });
+  
+//       res.status(200).json(averageRatings);
+//     } catch (error) {
+//       res.status(500).json({ error: 'An error occurred while calculating average ratings.' });
+//     }
+//   }
+
 module.exports = {
     createReviewRating,
     viewReviewRating,

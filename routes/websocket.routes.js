@@ -3,6 +3,7 @@ const router = express.Router();
 const WebSocket = require('ws');
 
 router.get('/test-websocket', (req, res) => {
+    console.log('check websocket via insomnia');
     // You can handle the HTTP request as needed
 
     // Create a WebSocket connection on this route

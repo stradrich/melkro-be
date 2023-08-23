@@ -29,18 +29,19 @@ async function register(req, res) {
         password: hashPassword,
     });
 
-    // Create verification token with email
-    const token = jwt.sign(
-        {
-            email: user.email,
-        }, 
-            process.env.SECRET_KEY,
-        {
-            expiresIn: "1h", 
-        }
-    );
-        console.log(token);
+    // Create verification token with email (JWT)
+    // const token = jwt.sign(
+    //     {
+    //         email: user.email,
+    //     }, 
+    //         process.env.SECRET_KEY,
+    //     {
+    //         expiresIn: "1h", 
+    //     }
+    // );
+    //     console.log(token);
 
+        // MAILGUN
            // Email data
             // const data = {
             //     from: "mailgun@" + process.env.MAILGUN_DOMAIN,
@@ -54,19 +55,20 @@ async function register(req, res) {
             //     `
             // }
 
-        const data = {
-            from: "mailgun@" + process.env.MAILGUN_DOMAIN,
-            to: user.email,
-            subject: "Verify Your Account",
-            html: `Your token is ${token}`,
-        };
+        // 58 to 72 commented out
+        // const data = {
+        //     from: "mailgun@" + process.env.MAILGUN_DOMAIN,
+        //     to: user.email,
+        //     subject: "Verify Your Account",
+        //     html: `Your token is ${token}`,
+        // };
 
-        // Send email to user with verify link
-        await mg.messages.create(process.env.MAILGUN_DOMAIN, data);
+        // // Send email to user with verify link
+        // await mg.messages.create(process.env.MAILGUN_DOMAIN, data);
 
-        // If user received verification link, another email will notify the backend 
+        // // If user received verification link, another email will notify the backend 
         res.json({
-            message: "Email verification link sent to user's email",
+            // message: "Email verification link sent to user's email",
             user
         });  
 

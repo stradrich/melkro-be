@@ -2,7 +2,7 @@ const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db.config');
 
 const SpaceListing = sequelize.define(
-    "SpaceListing",
+    "space_listings",
     {
         listing_id: {
             type: DataTypes.INTEGER,
@@ -12,13 +12,13 @@ const SpaceListing = sequelize.define(
         },
         user_id: {
             type: DataTypes.INTEGER,
-            allowNull: false,
+            allowNull: true,
             references: {
-                model: 'User', // Replace 'User' with your actual User model name
+                model: 'users', // Replace 'User' with your actual User model name
                 key: 'user_id'
             }
         },
-        price: {
+        price_per_hour: {
             type: DataTypes.DECIMAL(10, 2),
             allowNull: false
         },
@@ -37,15 +37,7 @@ const SpaceListing = sequelize.define(
         },
         capacity: {
             type: DataTypes.INTEGER,
-            allowNull: false
-        },
-        rating: {
-            type: DataTypes.INTEGER,
             allowNull: false,
-            validate: {
-                min: 1,
-                max: 5
-            }
         },
         createdAt: {
             type: DataTypes.DATE,

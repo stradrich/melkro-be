@@ -3,8 +3,10 @@ const { hashPassword } = require("../utils/bcrypt.util.js");
 // CREATE
 // Authorization on create new user 
 async function createUser(req, res) {
+    console.log("checkpoint 1");
     try {
         // Why only admin? Because you don't want to mess up the database
+        console.log("checkpoint 2");
         if (req.user.role !== "admin"){
             throw 'Unauthorized'
         }
@@ -15,7 +17,7 @@ async function createUser(req, res) {
             ...req.body,
             password: hashedPassword,
         });
-
+        console.log("checkpoint 3", user);
         // users can sign up through front end? 
         res.json(user);
     } catch (error) {
