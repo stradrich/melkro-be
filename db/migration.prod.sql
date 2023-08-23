@@ -17,17 +17,28 @@ CREATE TABLE users (
 CREATE TABLE space_listings (
   listing_id INT PRIMARY KEY AUTO_INCREMENT,
   user_id INT NOT NULL,
-  price DECIMAL(10, 2) NOT NULL,
+  price_per_hour DECIMAL(10, 2) NOT NULL,
   address_link VARCHAR(255),
   pictures VARCHAR(255),
   availability VARCHAR(255) NOT NULL,
   description TEXT,
   capacity INT NOT NULL,
-  rating INT NOT NULL CHECK (rating >= 1 AND rating <= 5),
   createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
+
+CREATE TABLE timeslot (
+  timeslot_id INT PRIMARY KEY AUTO_INCREMENT,
+  user_id INT,
+  timeslot_datetime DATETIME,
+  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(user_id),
+  UNIQUE (user_id, timeslot_datetime)
+);
+
+
 
 -- Create bookings Table
 CREATE TABLE bookings (
@@ -79,7 +90,7 @@ CREATE TABLE reviews_rating (
   user_id INT NOT NULL,
   rating INT NOT NULL CHECK (rating >= 1 AND rating <= 5),
   review_text TEXT,
-   createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   FOREIGN KEY (user_id) REFERENCES users(user_id)
 );

@@ -3,9 +3,15 @@ const SpaceListing = require("../models/Listing");
 // create listing
 
 async function createListing(req, res) { 
+
+    console.log('checkpoint 0');
     try {
-        const newListing = await SpaceListing.create(req.body);
-        return res.status(201).json(newListing)
+        console.log('checkpoint 1');
+        const newListing = await SpaceListing.create({...req.body});
+        console.log('checkpoint 2 new listing', newListing);
+        
+        // return res.status(201).json(newListing)
+        res.json(newListing)
     } catch (error) {
         console.error(error);
         return res.status(500).json( { error: 'An error occurred while creating the listing.' });
@@ -27,6 +33,20 @@ async function viewListing(req, res) {
         
     }
 }
+
+async function viewAllListings(req, res) {
+    try {
+        const listings = await SpaceListing.findAll();
+        if (listings.length === 0) {
+            return res.status(404).json({ error: 'No listings found.' });
+        }
+        return res.status(200).json(listings);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'An error occurred while fetching the listings.' });
+    }
+}
+ 
 // update listing
 async function updateListing(req, res) {
     const listingId = req.params.id;
@@ -48,13 +68,14 @@ async function updateListing(req, res) {
 async function deleteListing(req, res) {
     const listingId = req.params.id;
     try {
-        const deletedCount = await SpaceListing.destory({
+        const deletedCount = await SpaceListing.destroy({
             where: { listing_id: listingId}, 
         });
         if (deletedCount === 0) {
             return res.status(404).json({ error: 'Listing not found. '});
         }
-        return res.status(204).end(); // No content
+        // return res.status(204).end(); // No content
+        res.json(deletedCount)
     } catch (error) {
         console.error(error);
         return res.status(500).json({ error: 'An error occurred while deleting the listing. '})
@@ -64,6 +85,7 @@ async function deleteListing(req, res) {
 module.exports = {
     createListing,
     viewListing,
+    viewAllListings,
     updateListing,
     deleteListing
 }
