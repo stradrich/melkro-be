@@ -2,7 +2,7 @@ const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db.config');
 
 const Payment = sequelize.define(
-    "Payment",
+    "payment",
     {
         payment_id: {
             type: DataTypes.INTEGER,
