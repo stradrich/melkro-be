@@ -9,10 +9,13 @@ const ReviewRating = require('../models/RnR');
 
 // Create a new review and rating
 async function createReviewRating(req, res) {
+    console.log('checkpoint 1');
     try {
+        console.log('checkpoint 2');
         const newReviewRating = await ReviewRating.create(req.body);
         return res.status(201).json(newReviewRating);
     } catch (error) {
+        console.log('checkpoint 3');
         console.error(error);
         return res.status(500).json({ error: 'An error occurred while creating the review and rating.' });
     }

@@ -2,38 +2,37 @@ const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db.config');
 
 const SpaceListing = sequelize.define(
-    "space_listings",
+    "space_listing",
     {
         listing_id: {
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true,
-            field: "listing_id" // Match the field name from your database
         },
         user_id: {
             type: DataTypes.INTEGER,
-            allowNull: true,
+            allowNull: false,
             references: {
-                model: 'users', // Replace 'User' with your actual User model name
-                key: 'user_id'
-            }
+                model: 'users',
+                key: 'user_id',
+            },
         },
         price_per_hour: {
             type: DataTypes.DECIMAL(10, 2),
-            allowNull: false
+            allowNull: false,
         },
         address_link: {
-            type: DataTypes.STRING(255)
+            type: DataTypes.STRING(255),
         },
         pictures: {
-            type: DataTypes.STRING(255)
+            type: DataTypes.STRING(255),
         },
         availability: {
             type: DataTypes.STRING(255),
-            allowNull: false
+            allowNull: false,
         },
         description: {
-            type: DataTypes.TEXT
+            type: DataTypes.TEXT,
         },
         capacity: {
             type: DataTypes.INTEGER,
@@ -41,13 +40,13 @@ const SpaceListing = sequelize.define(
         },
         createdAt: {
             type: DataTypes.DATE,
-            defaultValue: DataTypes.NOW
+            defaultValue: DataTypes.NOW,
         },
         updatedAt: {
             type: DataTypes.DATE,
             defaultValue: DataTypes.NOW,
-            onUpdate: DataTypes.NOW
-        }
+            onUpdate: DataTypes.NOW,
+        },
     }
 );
 

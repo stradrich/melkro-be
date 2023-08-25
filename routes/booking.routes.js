@@ -9,6 +9,8 @@ router.post('/bookings', verifyToken, checkRoles(['admin', 'provider', 'customer
 
 // View a booking by ID
 router.get('/bookings/:id', verifyToken, checkRoles(['admin', 'provider', 'customer']), bookingController.viewBooking);
+// View all booking 
+router.get('/bookings/', verifyToken, checkRoles(['admin']), bookingController.viewAllBookings);
 
 // Update a booking by ID
 router.put('/bookings/:id', verifyToken, checkRoles(['admin', 'provider', 'customer']), bookingController.updateBooking);

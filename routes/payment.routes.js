@@ -8,10 +8,10 @@ const Payment = require('../models/Payment')
 
 // CRUD
 router.post('/payment', verifyToken, checkRoles(['admin', 'provider']), paymentController.createPayment);
-// router.get('/payment-attempt', verifyToken, checkRoles(['admin', 'provider', 'customer']), paymentController.createPaymentAttempt);
-// router.get('/payment-attempt/:id', verifyToken, checkRoles(['admin', 'provider', 'customer']), paymentController.createPaymentAttempt);
-// router.put('/payment-attempt/id', verifyToken, checkRoles(['admin', 'provider', 'customer']), paymentController.createPaymentAttempt);
-// router.delete('/payment-attempt', verifyToken, checkRoles(['admin', 'provider', 'customer']), paymentController.createPaymentAttempt);
+// router.get('/payment', verifyToken, checkRoles(['admin', 'provider', 'customer']), paymentController.createPaymentAttempt);
+// router.get('/payment:id', verifyToken, checkRoles(['admin', 'provider', 'customer']), paymentController.createPaymentAttempt);
+// router.put('/payment/:id', verifyToken, checkRoles(['admin', 'provider', 'customer']), paymentController.createPaymentAttempt);
+// router.delete('/payment?:od', verifyToken, checkRoles(['admin', 'provider', 'customer']), paymentController.createPaymentAttempt);
 
 
 
