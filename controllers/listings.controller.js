@@ -75,7 +75,7 @@ async function deleteListing(req, res) {
             return res.status(404).json({ error: 'Listing not found. '});
         }
         // return res.status(204).end(); // No content
-        res.json(deletedCount)
+       res.json(deletedCount) 
     } catch (error) {
         console.error(error);
         return res.status(500).json({ error: 'An error occurred while deleting the listing. '})

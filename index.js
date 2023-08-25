@@ -1,6 +1,8 @@
 const express = require("express");
 const app = express();
+const cors = require("cors")
 const morgan = require("morgan")
+
 
 
 // Load environment variables. See .env file for available variables.
@@ -42,6 +44,8 @@ app.use(express.json());
 app.use(morganConfig);
 
 const sequelize = require("./config/db.config.js")
+sequelize.options.hooks = {};
+
 
 // Define routes 
 // HERE!!!!!
@@ -51,6 +55,8 @@ const listingRoutes = require("./routes/listing.routes.js")
 const messagingRoutes = require("./routes/messaging.routes.js")
 const paymentRoutes = require("./routes/payment.routes.js")
 const RnRRoutes = require("./routes/RnR.routes.js")
+const stripeRoutes = require("./routes/stripe.routes")
+const timeslotRoutes = require("./routes/timeslot.routes.js")
 const userRoutes = require("./routes/user.routes.js")
 const websocketRoutes = require("./routes/websocket.routes.js")
 
@@ -61,8 +67,14 @@ app.use("/listings", listingRoutes)
 app.use("/messaging", messagingRoutes)
 app.use("/payment", paymentRoutes)
 app.use("/reviews-ratings", RnRRoutes)
+app.use("/stripe", stripeRoutes)
+app.use("/timeslot", timeslotRoutes)
 app.use("/users", userRoutes)
 app.use("/websocket", websocketRoutes)
+
+app.get("/", (req, res) => {
+    res.send("Welcome to music space API... ")
+})
 
 
 // Health routes (Application monitoring, load balancing, automatic recovery & scaling, diagnostics & troubleshooting, third-party integration, transparent communication, customizable indicators)
@@ -71,7 +83,48 @@ app.get('/', (req,res) => {
     res.send(`Environment: ${process.env.NODE_ENV} OK`)
 })
 // 2. Check database connection
+// Example sync usage
+
+// Sync models with database
+sequelize.sync()
+   .then(() => {
+      console.log('Database synced successfully');
+   })
+   .catch((error) => {
+      console.error('Error syncing database:', error);
+   });
+
 // 3. Check third-party service availability
+// A. Stripe Payment
+const stripe = require('stripe')(process.env.STRIPE_KEY);
+app.get('/check-stripe', async (req, res) => {
+    try {
+        console.log("checkpoint 1");
+        // Attempt to retrieve some data from Stripe to check its availability
+        const paymentMethods = await stripe.paymentMethods.list({ limit: 1 });
+        
+        if (paymentMethods.data.length > 0) {
+            console.log("checkpoint 2");
+            return res.status(200).json({ message: 'Stripe service is available.' });
+        } else {
+            console.log("checkpoint 3");
+            return res.status(500).json({ message: 'Stripe service is not responding as expected.' });
+        }
+    } catch (error) {
+        console.log("checkpoint 4");
+        console.error('Error checking Stripe service:', error);
+        return res.status(500).json({ message: 'An error occurred while checking the Stripe service.' });
+    }
+});
+
+// ... Other route definitions ...
+
+// Start the server
+app.listen(3000, () => {
+    console.log('Server is running on port 3000');
+});
+
+
 // 4. Check dependencies 
 
 // Start the server

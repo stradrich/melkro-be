@@ -2,57 +2,71 @@ const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db.config');
 
 const Booking = sequelize.define(
-    "Booking",
+    "bookings",
     {
         booking_id: {
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true,
-            field: "booking_id" // Match the field name from your database
+        },
+        user_id: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            references: {
+                model: 'users',
+                key: 'user_id',
+            },
+        },
+        listing_id: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            references: {
+                model: 'space_listings',
+                key: 'listing_id',
+            },
         },
         status: {
             type: DataTypes.ENUM('pending', 'confirmed', 'cancelled', 'declined'),
-            defaultValue: 'pending'
+            defaultValue: 'pending',
         },
         reminder: {
-            type: DataTypes.ENUM('24_hours', '12_hours', '6_hours', '3_hours', '45_minutes')
+            type: DataTypes.ENUM('24_hours', '12_hours', '6_hours', '3_hours', '45_minutes'),
         },
         check_in: {
             type: DataTypes.DATE,
-            defaultValue: DataTypes.NOW
+            defaultValue: DataTypes.NOW,
         },
         check_out: {
             type: DataTypes.DATE,
-            defaultValue: DataTypes.NOW
+            defaultValue: DataTypes.NOW,
         },
         required_equipments: {
             type: DataTypes.ENUM('YES', 'NO'),
-            defaultValue: 'NO'
+            defaultValue: 'NO',
         },
         other_remarks: {
-            type: DataTypes.TEXT
+            type: DataTypes.TEXT,
         },
         purpose: {
-            type: DataTypes.ENUM('practice', 'teaching', 'recording', 'rehearsal', 'seminar', 'masterclasses', 'workshop')
+            type: DataTypes.ENUM('practice', 'teaching', 'recording', 'rehearsal', 'seminar', 'masterclasses', 'workshop'),
         },
         first_instrument: {
             type: DataTypes.TEXT,
-            allowNull: false
+            allowNull: false,
         },
         capacity: {
-            type: DataTypes.ENUM('individual', 'less than four', 'band/orchestra')
+            type: DataTypes.ENUM('individual', 'less than four', 'band/orchestra'),
         },
         createdAt: {
             type: DataTypes.DATE,
-            defaultValue: DataTypes.NOW
+            defaultValue: DataTypes.NOW,
         },
         updatedAt: {
             type: DataTypes.DATE,
             defaultValue: DataTypes.NOW,
-            onUpdate: DataTypes.NOW
-        }
+            onUpdate: DataTypes.NOW,
+        },
     }
 );
 
 module.exports = Booking;
-

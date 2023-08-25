@@ -1,4 +1,4 @@
-const { Timeslot } = require('../models'); // Make sure the path to your Timeslot model is correct
+const { Timeslot } = require('../models/Timeslot'); // Make sure the path to your Timeslot model is correct
 
 // Controller function to create a timeslot
 async function createTimeslot(req, res) {

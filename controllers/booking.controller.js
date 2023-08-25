@@ -1,9 +1,30 @@
 // booking.controller.js
 const Booking = require('../models/Booking');
+const { DataTypes } = require('sequelize');
+const sequelize = require('../config/db.config');
+const User = require('../models/User'); // Import the User model
+
+// booking.controller.js
+const { verifyToken } = require('../middlewares/auth.middleware'); // Import the verifyToken middleware
 
 // Create a new booking
 async function createBooking(req, res) {
-    try {
+    try {// booking.controller.js
+        const Booking = require('../models/Booking');
+        
+        // Create a new booking
+        async function createBooking(req, res) {
+            try {
+                const newBooking = await Booking.create(req.body);
+                return res.status(201).json(newBooking);
+            } catch (error) {
+                console.error(error);
+                return res.status(500).json({ error: 'An error occurred while creating the booking.' });
+            }
+        }
+        
+        // ... other controller functions ...
+        
         const newBooking = await Booking.create(req.body);
         return res.status(201).json(newBooking);
     } catch (error) {
@@ -11,6 +32,12 @@ async function createBooking(req, res) {
         return res.status(500).json({ error: 'An error occurred while creating the booking.' });
     }
 }
+
+// ... other controller functions ...
+
+
+
+
 
 // View a booking by ID
 async function viewBooking(req, res) {
@@ -27,6 +54,17 @@ async function viewBooking(req, res) {
     }
 }
 
+// View all bookings
+async function viewAllBookings(req, res) {
+    try {
+        const bookings = await Booking.findAll();
+        return res.status(200).json(bookings);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'An error occurred while fetching the bookings.' });
+    }
+}
+
 // Update a booking by ID
 async function updateBooking(req, res) {
     const bookingId = req.params.id;
@@ -38,6 +76,7 @@ async function updateBooking(req, res) {
         if (updatedCount === 0) {
             return res.status(404).json({ error: 'Booking not found.' });
         }
+        res.json(updatedBooking)
         return res.status(200).json(updatedBooking[0]);
     } catch (error) {
         console.error(error);
@@ -55,7 +94,9 @@ async function deleteBooking(req, res) {
         if (deletedCount === 0) {
             return res.status(404).json({ error: 'Booking not found.' });
         }
+        res.json(deletedCount)
         return res.status(204).end(); // No content
+        
     } catch (error) {
         console.error(error);
         return res.status(500).json({ error: 'An error occurred while deleting the booking.' });
@@ -66,5 +107,6 @@ module.exports = {
     createBooking,
     viewBooking,
     updateBooking,
+    viewAllBookings,
     deleteBooking,
 };
