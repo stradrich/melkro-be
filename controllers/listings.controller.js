@@ -58,6 +58,7 @@ async function updateListing(req, res) {
         if (updatedCount === 0) {
             return res.status(404).json( { error: "Listing not found. "});
         }
+        res.json(updatedCount) 
         return res.status(200).json([0]);
     } catch (error) {
         console.error(error);

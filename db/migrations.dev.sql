@@ -1,7 +1,7 @@
 CREATE DATABASE music_space_dev;
 USE music_space_dev;
 
--- Create users Table (musician, provider, admin)
+-- Create users Table
 CREATE TABLE users (
   user_id INT PRIMARY KEY AUTO_INCREMENT,
   username VARCHAR(255) NOT NULL,
@@ -39,37 +39,25 @@ CREATE TABLE timeslot (
 );
 
 -- Create bookings Table
-CREATE TABLE IF NOT EXISTS `bookings` (
-  `booking_id` INT AUTO_INCREMENT PRIMARY KEY,
-  `user_id` INT NOT NULL,
-  `listing_id` INT NOT NULL,
-  `status` ENUM('pending', 'confirmed', 'cancelled', 'declined') DEFAULT 'pending',
-  `reminder` ENUM('24_hours', '12_hours', '6_hours', '3_hours', '45_minutes'),
-  `check_in` DATETIME,
-  `check_out` DATETIME,
-  `required_equipments` ENUM('YES', 'NO') DEFAULT 'NO',
-  `other_remarks` TEXT,
-  `purpose` ENUM('practice', 'teaching', 'recording', 'rehearsal', 'seminar', 'masterclasses', 'workshop'),
-  `first_instrument` TEXT NOT NULL,
-  `capacity` ENUM('individual', 'less than four', 'band/orchestra'),
-  `createdAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  `updatedAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+CREATE TABLE bookings (
+  booking_id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT NOT NULL,
+  listing_id INT NOT NULL,
+  status ENUM('pending', 'confirmed', 'cancelled', 'declined') DEFAULT 'pending',
+  reminder ENUM('24_hours', '12_hours', '6_hours', '3_hours', '45_minutes'),
+  check_in DATETIME,
+  check_out DATETIME,
+  required_equipments ENUM('YES', 'NO') DEFAULT 'NO',
+  other_remarks TEXT,
+  purpose ENUM('practice', 'teaching', 'recording', 'rehearsal', 'seminar', 'masterclasses', 'workshop'),
+  first_instrument TEXT NOT NULL,
+  capacity ENUM('individual', 'less than four', 'band/orchestra'),
+  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   CONSTRAINT `fk_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
   CONSTRAINT `fk_listing_id` FOREIGN KEY (`listing_id`) REFERENCES `space_listings` (`listing_id`)
 );
 
--- Create instrument_services Table (commented out)
--- CREATE TABLE instrument_services (
---   service_id INT PRIMARY KEY AUTO_INCREMENT,
---   booking_id INT NOT NULL,
---   instrument ENUM('keys', 'strings', 'woodwind', 'brass', 'percussion', 'vocal', 'contemporary') NOT NULL,
---   required_instrument ENUM('pianoforte-upright', 'pianoforte-grand','harpsichord', 'celeste', 'keyboard', 'electric-organ', 'double-bass', 'timpani', 'vibraphone', 'xylophone', 'gong', 'gamelan', 'harp', 'regular-drum-set', 'microphone', 'amplifier', 'more-than-one', 'not-applicable') NOT NULL,
---   remarks TEXT,
---   rental_price DECIMAL(10, 2) NOT NULL,
---   createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
---   updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
---   FOREIGN KEY (booking_id) REFERENCES bookings(booking_id)
--- );
 
 -- Create payment Table
 CREATE TABLE payment (
@@ -79,8 +67,9 @@ CREATE TABLE payment (
   payment_method VARCHAR(255) NOT NULL,
   createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  FOREIGN KEY (booking_id) REFERENCES bookings(booking_id)
+  FOREIGN KEY (booking_id) REFERENCES bookings(booking_id) 
 );
+
 
 -- Create reviews_rating Table
 CREATE TABLE reviews_rating (
@@ -93,26 +82,3 @@ CREATE TABLE reviews_rating (
   FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 
--- Create conversations Table (commented out)
--- CREATE TABLE conversations (
---   conversation_id INT PRIMARY KEY AUTO_INCREMENT,
---   provider_id INT NOT NULL,
---   user_id INT NOT NULL,
---   createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
---   updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
---   FOREIGN KEY (provider_id) REFERENCES users(user_id),
---   FOREIGN KEY (user_id) REFERENCES users(user_id)
--- );
-
--- Create messages Table (commented out)
--- CREATE TABLE messages (
---   message_id INT PRIMARY KEY AUTO_INCREMENT,
---   conversation_id INT NOT NULL,
---   sender_id INT NOT NULL,
---   content TEXT NOT NULL,
---   sent_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
---   createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
---   updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
---   FOREIGN KEY (conversation_id) REFERENCES conversations(conversation_id),
---   FOREIGN KEY (sender_id) REFERENCES users(user_id)
--- );
