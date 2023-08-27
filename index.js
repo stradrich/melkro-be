@@ -64,16 +64,16 @@ const websocketRoutes = require("./routes/websocket.routes.js")
 app.use("/auth", authRoutes)
 app.use("/bookings", bookingRoutes)
 app.use("/listings", listingRoutes)
-app.use("/messaging", messagingRoutes)
+// app.use("/messaging", messagingRoutes)
 app.use("/payment", paymentRoutes)
 app.use("/reviews-ratings", RnRRoutes)
 app.use("/stripe", stripeRoutes)
 app.use("/timeslot", timeslotRoutes)
 app.use("/users", userRoutes)
-app.use("/websocket", websocketRoutes)
+// app.use("/websocket", websocketRoutes)
 
-app.get("/", (req, res) => {
-    res.send("Welcome to music space API... ")
+app.get("/music-space", (req, res) => {
+    res.send("Welcome to music space API... 🎻 🎹 🎵 ")
 })
 
 
@@ -88,10 +88,10 @@ app.get('/', (req,res) => {
 // Sync models with database
 sequelize.sync()
    .then(() => {
-      console.log('Database synced successfully');
+      console.log('🎉 Database synced successfully');
    })
    .catch((error) => {
-      console.error('Error syncing database:', error);
+      console.error('🤯 Error syncing database:', error);
    });
 
 // 3. Check third-party service availability

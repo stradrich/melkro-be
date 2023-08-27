@@ -31,12 +31,12 @@ async function getAllUsers(req, res) {
         // ADMIN
         if (req.user.role === "admin") {
             // Find all users (with pagination)
-            const page = paseInt(req.query.page) || 1; // Get the requested page from query params, default to page 1
+            const page = parseInt(req.query.page) || 1; // Get the requested page from query params, default to page 1
             const pageSize = parseInt(req.query.pageSize) || 10; // Set the number of records per page, default to 10
 
             const offset = (page - 1) * pageSize; // Calculate the offset for the query
 
-            const users = await Users.findAll({
+            const users = await User.findAll({
                 offset: offset,
                 limit: pageSize,
             });
@@ -49,7 +49,7 @@ async function getAllUsers(req, res) {
         } else if (req.user.role === "customer") {
             // CUSTOMER
             // Customer can only view their own profile 
-            const user = await Users.findByPk(req.user.id);
+            const user = await User.findByPk(req.user.id);
             if (!user) {
                 throw "Please sign up an account"
             }
@@ -64,7 +64,7 @@ async function getAllUsers(req, res) {
 async function getUserById(req, res) {
     try {
         // Find user by id
-        const user = await Users.findByPk(parseInt(req.params.user_id));
+        const user = await User.findByPk(parseInt(req.params.user_id));
 
         res.json(user);
     } catch (error) {
@@ -78,7 +78,7 @@ async function updateUser(req, res) {
     // User can only update their own profile
     // TESTING
 
-    const user = await Users.findByPk(parseInt(req.params.user_id))
+    const user = await User.findByPk(parseInt(req.params.user_id))
     console.log("Update User", user);
 
     if(user.id !== req.user.id) {
