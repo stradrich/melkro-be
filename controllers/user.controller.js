@@ -25,7 +25,7 @@ async function createUser(req, res) {
     }
 }
 
-// GET (read)
+// GET SPECIFIC (read)
 async function getAllUsers(req, res) {
     try {
         // ADMIN
@@ -60,11 +60,11 @@ async function getAllUsers(req, res) {
     }
 }
 
-// GET (read)
+// GET SPECIFIC (read)
 async function getUserById(req, res) {
     try {
         // Find user by id
-        const user = await User.findByPk(parseInt(req.params.user_id));
+        const user = await User.findByPk(parseInt(req.params.userId));
 
         res.json(user);
     } catch (error) {
@@ -74,14 +74,15 @@ async function getUserById(req, res) {
 
 // POST (update)
 async function updateUser(req, res) {
+    console.log("testtttttt");
     try {
     // User can only update their own profile
     // TESTING
 
-    const user = await User.findByPk(parseInt(req.params.user_id))
+    const user = await User.findByPk(parseInt(req.params.userId))
     console.log("Update User", user);
-
-    if(user.id !== req.user.id) {
+        console.log("current user", req.user);
+    if(user.user_id !== req.user.id && req.user.role !== 'admin') {
         throw "Cannot update other people's profile"
     } else {
         const hashedPassword = hashPassword(req.body.password);
@@ -92,7 +93,7 @@ async function updateUser(req, res) {
             },
             {
                 where: {
-                    id: parseInt(req.params.user_id),
+                    user_id: parseInt(req.params.userId),
                 },
             }
         );
@@ -112,17 +113,17 @@ async function deleteUser(req, res) {
    // User can only delete their own profile 
    // TESTING 
    
-   const user = await User.findByPk(parseInt(req.params.user_id))
+   const user = await User.findByPk(parseInt(req.params.userId))
    console.log("Delete User:", user);
    console.log(`req role:`, req.user.role);
    console.log(`params role:`, user.role);
 
-   if(req.user.role !== 'admin' && user.id !== req.user.id) {
+   if(req.user.role !== 'admin' && user.user_id !== req.user.id) {
     throw "Cannot delete other people's profile"
    } else {
     const user = await User.destroy({
         where: {
-            id: parseInt(req.params.user_id),
+            user_id: parseInt(req.params.userId),
         },
     });
     // Send  deleted user as response 
@@ -134,9 +135,9 @@ async function deleteUser(req, res) {
 }
 
 module.exports = {
+    createUser,
     getAllUsers,
     getUserById,
-    createUser,
     updateUser,
     deleteUser,
 };

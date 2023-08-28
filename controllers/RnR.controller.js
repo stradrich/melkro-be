@@ -36,6 +36,17 @@ async function viewReviewRating(req, res) {
     }
 }
 
+// View all review ratings
+async function viewAllReviewRatings(req, res) {
+    try {
+        const allReviewRatings = await ReviewRating.findAll();
+        return res.status(200).json(allReviewRatings);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'An error occurred while fetching all review ratings.' });
+    }
+}
+
 // Update a review and rating by ID
 async function updateReviewRating(req, res) {
     const reviewId = req.params.id;
@@ -96,6 +107,7 @@ async function deleteReviewRating(req, res) {
 module.exports = {
     createReviewRating,
     viewReviewRating,
+    viewAllReviewRatings,
     updateReviewRating,
     deleteReviewRating,
 };

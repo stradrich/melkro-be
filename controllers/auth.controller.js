@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 // - Implement user model
 const User = require("../models/User");
-const { hashedPassword, comparePassword } = require("../utils/bcrypt.util.js")
+const { hashPassword, comparePassword } = require("../utils/bcrypt.util.js")
 const { mg } = require("../utils/mailgun.util.js");
 
 // - Implement user registration and authentication
@@ -23,10 +23,10 @@ async function register(req, res) {
 
     // Create user using data from request body.
     // Request body must contain all required fields defined in User model.
-    const hashPassword = hashedPassword(req.body.password);
+    const hashedPassword = hashPassword(req.body.password);
     const user = await User.create({
         ...req.body,
-        password: hashPassword,
+        password: hashedPassword,
     });
 
     // Create verification token with email (JWT)
@@ -204,7 +204,7 @@ async function login(req, res) {
 
         //  Generate JWT
         const token = jwt.sign(
-            { id: user.id, email: user.email, role: user.role },
+            { id: user.user_id, email: user.email, role: user.role },
             process.env.SECRET_KEY,
             {
                 // expiresIn: "2h",

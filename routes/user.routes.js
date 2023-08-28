@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const userController = require('../controllers/user.controller')
+const authController = require('../controllers/auth.controller')
 // implement your middleware here
 const { verifyToken, checkRoles } = require("../middlewares/auth.middleware")
 
@@ -10,9 +11,9 @@ const { verifyToken, checkRoles } = require("../middlewares/auth.middleware")
 router.post(
     '/',
     verifyToken,
-    // NEED TO ARGUE ABOUT THIS ‼️
     checkRoles(['admin']),
-    userController.createUser 
+    userController.createUser,
+    // authController.register
 )
 
 // CRUD - READ
