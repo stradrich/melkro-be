@@ -1,7 +1,7 @@
 CREATE DATABASE music_space_prod;
 USE music_space_prod;
 
--- Create users Table 
+-- Create users Table
 CREATE TABLE users (
   user_id INT PRIMARY KEY AUTO_INCREMENT,
   username VARCHAR(255) NOT NULL,
@@ -25,7 +25,7 @@ CREATE TABLE space_listings (
   capacity INT NOT NULL,
   createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  FOREIGN KEY (user_id) REFERENCES users(user_id)
+  FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
 
 CREATE TABLE timeslot (
@@ -34,7 +34,7 @@ CREATE TABLE timeslot (
   timeslot_datetime DATETIME,
   createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  FOREIGN KEY (user_id) REFERENCES users(user_id),
+  FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
   UNIQUE (user_id, timeslot_datetime)
 );
 
@@ -54,8 +54,8 @@ CREATE TABLE bookings (
   capacity ENUM('individual', 'less than four', 'band/orchestra'),
   createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  CONSTRAINT `fk_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
-  CONSTRAINT `fk_listing_id` FOREIGN KEY (`listing_id`) REFERENCES `space_listings` (`listing_id`)
+  CONSTRAINT `fk_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE,
+  CONSTRAINT `fk_listing_id` FOREIGN KEY (`listing_id`) REFERENCES `space_listings` (`listing_id`) ON DELETE CASCADE
 );
 
 
@@ -67,7 +67,7 @@ CREATE TABLE payment (
   payment_method VARCHAR(255) NOT NULL,
   createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  FOREIGN KEY (booking_id) REFERENCES bookings(booking_id) 
+  FOREIGN KEY (booking_id) REFERENCES bookings(booking_id) ON DELETE CASCADE ON UPDATE CASCADE 
 );
 
 
@@ -79,6 +79,6 @@ CREATE TABLE reviews_rating (
   review_text TEXT,
   createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  FOREIGN KEY (user_id) REFERENCES users(user_id)
+  FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
 
