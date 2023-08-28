@@ -20,11 +20,11 @@ const createPayment = async (req, res) => {
             paymentRecord: paymentRecord
         };
         
-        res.status(201).json(response);
         console.log("checkpoint 3", paymentRecord);
+        return res.status(201).json(response);
     } catch (error) {
         console.error('Error creating Payment:', error);
-        res.status(500).json({ error: 'Error creating Payment' });
+        return res.status(500).json({ error: 'Error creating Payment' });
     }
 }
 
@@ -35,10 +35,10 @@ async function getPaymentById(req, res) {
         if (!payment) {
             return res.status(404).json({ error: 'Payment not found' });
         }
-        res.json(payment);
+        return res.json(payment);
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: 'An error occurred while fetching the payment' });
+        return res.status(500).json({ error: 'An error occurred while fetching the payment' });
     }
 }
 
@@ -46,10 +46,10 @@ async function getPaymentById(req, res) {
 async function getAllPayments(req, res) {
     try {
         const payments = await Payment.findAll();
-        res.json(payments);
+        return res.json(payments);
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: 'An error occurred while fetching payments' });
+        return res.status(500).json({ error: 'An error occurred while fetching payments' });
     }
 }
 
@@ -69,10 +69,10 @@ async function updatePayment(req, res) {
         payment.payment_method = payment_method;
         await payment.save();
 
-        res.json(payment);
+        return res.json(payment);
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: 'An error occurred while updating the payment' });
+        return res.status(500).json({ error: 'An error occurred while updating the payment' });
     }
 }
 
@@ -85,10 +85,10 @@ async function deletePayment(req, res) {
         }
 
         await payment.destroy();
-        res.json({ message: 'Payment deleted successfully' });
+        return res.json({ message: 'Payment deleted successfully' });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: 'An error occurred while deleting the payment' });
+        return res.status(500).json({ error: 'An error occurred while deleting the payment' });
     }
 }
 

@@ -11,7 +11,7 @@ async function createListing(req, res) {
         console.log('checkpoint 2 new listing', newListing);
         
         // return res.status(201).json(newListing)
-        res.json(newListing)
+        return res.json(newListing)
     } catch (error) {
         console.error(error);
         return res.status(500).json( { error: 'An error occurred while creating the listing.' });
@@ -58,8 +58,8 @@ async function updateListing(req, res) {
         if (updatedCount === 0) {
             return res.status(404).json( { error: "Listing not found. "});
         }
-        res.json(updatedCount) 
-        return res.status(200).json([0]);
+        // res.json(updatedCount) 
+        return res.json(updatedListing) 
     } catch (error) {
         console.error(error);
         return res.status(500).json({ error: 'An error occurred while updating the listing. '})
@@ -76,7 +76,7 @@ async function deleteListing(req, res) {
             return res.status(404).json({ error: 'Listing not found. '});
         }
         // return res.status(204).end(); // No content
-       res.json(deletedCount) 
+       return res.json(deletedCount) 
     } catch (error) {
         console.error(error);
         return res.status(500).json({ error: 'An error occurred while deleting the listing. '})

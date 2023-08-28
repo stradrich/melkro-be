@@ -14,7 +14,7 @@ const ReviewRating = sequelize.define(
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
-                model: 'User', // Replace 'User' with your actual User model name
+                model: 'users', // Replace 'User' with your actual User model name
                 key: 'user_id'
             }
         },
