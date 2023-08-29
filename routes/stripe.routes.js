@@ -1,137 +1,147 @@
-const express = require('express')
+const express = require('express');
+const SpaceListing = require('../models/Listing');
+const Payment = require("../models/Payment")
 const stripe = require('stripe')(process.env.STRIPE_KEY);
 const router = express.Router()
 
-require('dotenv').config()
 
-// app.use(express.static('public'));
+
+// const app = express();
+
+require('dotenv').config()
 
 const YOUR_DOMAIN = 'http://localhost:8080';
 
 
 router.post('/create-checkout-session', async (req, res) => {
 
-    // const customer = await stripe.customers.create({
-    //     metadata: {
-    //         userId: req.body.userId,
-    //         cart: JSON.stringify(req.body.cartItem)
-    //     }
-    // })
-    // const line_items = req.body.cartItems.map(item => {
-    //     return {
-    //         price_data: {
-    //             currency: 'usd',
-    //             product_data: { // listings!!
-    //               name: product.name,
-    //               metadata: {
-    //                 id: item.id
-    //               }
-    //             },
-    //              unit_amount: product.price *  100,
-    //           },
-    //              quantity: product.quantity,
-    //     }
-    // })
+  try {
+    const listingId = req.body.listingId;
+    const hours = req.body.hours;
+    const addons = req.body.addons;
+    
+    if (!listingId) throw "Invalid listing id";
+    if (!hours) throw "Invalid hours";
 
-  const session = await stripe.checkout.sessions.create({
-    payment_method_types: ['card'],
-    line_items: [
+    // Check if the type of addons is an array or not
+    if (addons && !Array.isArray(addons)) throw "Invalid addons";
+
+    const listing = await SpaceListing.findByPk(listingId);
+    console.log("listing", listing);
+    if (!listing) {
+      return res.status(404).json({ error: 'Listing not found.' });
+    }
+
+    const lineItems = [
       {
         price_data: {
-            currency: 'usd',
-            product_data: {
-            //   name: product.name,
-            name: "music space",
-            },
-            // unit_amount: product.price,
-            unit_amount: 10000,
+          currency: 'usd',
+          product_data: {
+            name: listing.description,
           },
-            //  quantity: product.quantity,
-            quantity: 1, 
+          unit_amount: listing.price_per_hour * parseInt(hours) * 100,
+        },
+        quantity: 1,
       },
-      {
-        price_data: {
-            currency: 'usd',
-            product_data: {
-            //   name: product.name,
-            name: "instrument rental",
-            },
-            // unit_amount: product.price,
-            unit_amount: 10000,
-          },
-            //  quantity: product.quantity,
-            quantity: 2,
-      },
-    ],
-    // customer: customer.id,
-    // line_items,
-    mode: 'payment',
-    success_url: `${process.env.CLIENT_URL}/checkout-success`,
-    cancel_url: `${process.env.CLIENT_URL}/cart`,
-  });
+    ]
+    
+    if (addons && addons.length > 0) {
+      addons.forEach(addon => {
+        lineItems.push({
+          price: addon.priceId,
+          quantity: addon.qty,
+        })
+      })
+    }
 
-  res.send({url: session.url });
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ['card'],
+      line_items: lineItems,
+      mode: 'payment',
+      success_url: `${process.env.CLIENT_URL}/checkout-success`,
+      cancel_url: `${process.env.CLIENT_URL}/cart`,
+    });
+
+    res.send({ url: session.url });
+
+    
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "An error occurred while creating the checkout session." });
+
+  }
+
 });
-
-// Create Order
 
 
 // Stripe Webhook 
-// This is your Stripe CLI webhook secret for testing your endpoint locally.
+const crypto = require('crypto');
+const db = require('../models/Payment'); // Replace with your database module or configuration
 
-let endpointSecret;
+const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
+router.post('/webhook', express.raw({ type: 'application/json' }), async (req, res) => {
+  console.log('checkpoint 1');
+  const sigHeader = req.get('stripe-signature'); // Get the stripe-signature header
 
-
-router.post('/webhook', express.raw({type: 'application/json'})), (req, res) => {
   const sig = req.headers['stripe-signature'];
 
-  let data;
-  let eventType;
+  let event;
+  try {
+    console.log('checkpoint 2');
+    event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
+  } catch (err) {
+    console.log('checkpoint 3');
+    res.status(400).send(`Webhook Error: ${err.message}`);
+    return;
+  }
 
-  if(endpointSecret) {
-      let event;
-    
-      try {
-        event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
-        console.log('Webhook verified');
-      } catch (err) {
-        console.log(`Webhook Error: ${err.message}`);
-        response.status(400).send(`Webhook Error: ${err.message}`);
-        return;
-      }
+  // Calculate the expected signature
+  // const payload = req.body;
+  const payload = JSON.stringify(req.body);
+  console.log('Original Payload:', payload);
+  const expectedSig = crypto
+    .createHmac('sha256', endpointSecret)
+    .update(payload)
+    .digest('hex');
 
-      data = event.data.object;
-      eventType = event.type;
-  } else {
-    data = req.body.data.object;
-    eventType = req.body.type
+    console.log('checkpoint 4');
+    console.log('Calculated Signature:', expectedSig);
 
+  // Compare the calculated signature with the header signature
+  if (sigHeader !== expectedSig) {
+    console.log('checkpoint 5');
+    return res.status(400).send('Webhook signature verification failed');
   }
 
   // Handle the event
-//   switch (event.type) {
-//     case 'payment_intent.succeeded':
-//       const paymentIntentSucceeded = event.data.object;
-//       // Then define and call a function to handle the event payment_intent.succeeded
-//       break;
-//     // ... handle other event types
-//     default:
-//       console.log(`Unhandled event type ${event.type}`);
-//   }
-  if (eventType === "checkout.session.completed") {
-    stripe.customers
-    .retrieve(data.customer)
-    .then((customer) => {
-        console.log(customer);
-        console.log("data", data);
-    })
-    .catch((err) => console.log(err.message));
+  switch (event.type) {
+    case 'checkout.session.completed':
+      const checkoutSession = event.data.object;
+      const paymentData = {
+        booking_id: checkoutSession.client_reference_id,
+        amount: checkoutSession.amount_total / 100,
+        payment_method: checkoutSession.payment_method_types[0],
+      };
+
+      // Insert payment data into your database
+      try {
+        console.log('checkpoint 6');
+        await db.query('INSERT INTO payments SET ?', paymentData);
+        console.log('Payment data inserted into the database');
+      } catch (error) {
+        console.log('checkpoint 7');
+        console.error('Error inserting payment data into the database:', error);
+      }
+      break;
+    default:
+      console.log(`Unhandled event type ${event.type}`);
   }
 
   // Return a 200 response to acknowledge receipt of the event
-  res.send().end();
-} 
+  res.send();
+});
+
 
 
 

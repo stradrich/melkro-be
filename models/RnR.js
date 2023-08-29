@@ -2,7 +2,7 @@ const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db.config');
 
 const ReviewRating = sequelize.define(
-    "reviews_ratings",
+    "reviews_rating",
     {
         review_id: {
             type: DataTypes.INTEGER,
@@ -14,7 +14,7 @@ const ReviewRating = sequelize.define(
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
-                model: 'User', // Replace 'User' with your actual User model name
+                model: 'users', // Replace 'User' with your actual User model name
                 key: 'user_id'
             }
         },

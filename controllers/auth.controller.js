@@ -67,14 +67,14 @@ async function register(req, res) {
         // await mg.messages.create(process.env.MAILGUN_DOMAIN, data);
 
         // // If user received verification link, another email will notify the backend 
-        res.json({
+        return res.json({
             // message: "Email verification link sent to user's email",
             user
         });  
 
     } catch (error) {
     // If there is any error, send error as response.
-    res.status(500).json({ error: error});
+        return res.status(500).json({ error: error});
     }
 }
 
@@ -109,10 +109,6 @@ async function verifyEmail(req, res) {
     );
     console.log("checkpoint 3");
 
-    // Send success message
-    res.send({
-        message: "Account Verified",
-    });
 
     // Prepare email data
     const data = {
@@ -128,8 +124,12 @@ async function verifyEmail(req, res) {
     // Send email to user
     await mg.messages.create(process.env.MAILGUN_DOMAIN, data)
 
+    // Send success message
+    return res.send({
+        message: "Account Verified",
+    });
     } catch (error) {
-    res.status(500).json({ error: error});
+        return res.status(500).json({ error: error});
     }
 }
 
@@ -212,9 +212,9 @@ async function login(req, res) {
             }
         );
 
-        res.status(200).json({ accessToken: token });
+        return res.status(200).json({ accessToken: token });
     } catch (error) {
-        res.status(500).json({ error: error });
+        return res.status(500).json({ error: error });
     }
 }
 

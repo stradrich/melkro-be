@@ -21,20 +21,21 @@ CREATE TABLE space_listings (
   address_link VARCHAR(255),
   pictures VARCHAR(255),
   availability VARCHAR(255) NOT NULL,
+  name TEXT,
   description TEXT,
   capacity INT NOT NULL,
   createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
+  FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-CREATE TABLE timeslot (
+CREATE TABLE timeslots (
   timeslot_id INT PRIMARY KEY AUTO_INCREMENT,
   user_id INT,
-  timeslot_datetime DATETIME,
+  timeslot_datetime TIMESTAMP,
   createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+  FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE ON UPDATE CASCADE,
   UNIQUE (user_id, timeslot_datetime)
 );
 
@@ -45,8 +46,8 @@ CREATE TABLE bookings (
   listing_id INT NOT NULL,
   status ENUM('pending', 'confirmed', 'cancelled', 'declined') DEFAULT 'pending',
   reminder ENUM('24_hours', '12_hours', '6_hours', '3_hours', '45_minutes'),
-  check_in DATETIME,
-  check_out DATETIME,
+  check_in TIMESTAMP,
+  check_out TIMESTAMP,
   required_equipments ENUM('YES', 'NO') DEFAULT 'NO',
   other_remarks TEXT,
   purpose ENUM('practice', 'teaching', 'recording', 'rehearsal', 'seminar', 'masterclasses', 'workshop'),
@@ -54,8 +55,8 @@ CREATE TABLE bookings (
   capacity ENUM('individual', 'less than four', 'band/orchestra'),
   createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  CONSTRAINT `fk_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE,
-  CONSTRAINT `fk_listing_id` FOREIGN KEY (`listing_id`) REFERENCES `space_listings` (`listing_id`) ON DELETE CASCADE
+  FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (listing_id) REFERENCES space_listings(listing_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 
@@ -72,13 +73,12 @@ CREATE TABLE payments (
 
 
 -- Create reviews_rating Table
-CREATE TABLE reviews_rating (
+CREATE TABLE reviews_ratings (
   review_id INT PRIMARY KEY AUTO_INCREMENT,
   user_id INT NOT NULL,
   rating INT NOT NULL CHECK (rating >= 1 AND rating <= 5),
   review_text TEXT,
   createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
+  FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
-

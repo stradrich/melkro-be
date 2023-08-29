@@ -19,9 +19,9 @@ async function createUser(req, res) {
         });
         console.log("checkpoint 3", user);
         // users can sign up through front end? 
-        res.json(user);
+        return res.json(user);
     } catch (error) {
-        res.status(500).json({ error: error});
+        return res.status(500).json({ error: error});
     }
 }
 
@@ -42,7 +42,7 @@ async function getAllUsers(req, res) {
             });
 
             //Send all users as response
-            res.json(users);
+            return res.json(users);
         } else if (req.user.role === "provider") {
             // PROVIDER
             // Providers can see other providers and customers who booked their listings
@@ -56,7 +56,7 @@ async function getAllUsers(req, res) {
         }
        
     } catch (error) {
-        res.status(500).json({ error: error});
+        return res.status(500).json({ error: error});
     }
 }
 
@@ -66,9 +66,9 @@ async function getUserById(req, res) {
         // Find user by id
         const user = await User.findByPk(parseInt(req.params.userId));
 
-        res.json(user);
+        return res.json(user);
     } catch (error) {
-        res.status(500).json({ error: error})
+        return res.status(500).json({ error: error})
     }
 }
 
@@ -99,11 +99,11 @@ async function updateUser(req, res) {
         );
 
         // Send updated "updateUser" as response
-        res.json(updateUser);
+        return res.json(updateUser);
     }
         
     } catch (error) {
-        res.status(500).json({ error: error});
+        return res.status(500).json({ error: error});
     }
 }
 
@@ -127,10 +127,10 @@ async function deleteUser(req, res) {
         },
     });
     // Send  deleted user as response 
-    res.json(user);
+    return res.json(user);
    }
     } catch (error) {
-      res.status(500).json({ error: error}); 
+      return res.status(500).json({ error: error}); 
     }
 }
 

@@ -76,8 +76,8 @@ async function updateBooking(req, res) {
         if (updatedCount === 0) {
             return res.status(404).json({ error: 'Booking not found.' });
         }
-        res.json(updatedBooking)
-        return res.status(200).json(updatedBooking[0]);
+        // res.json(updatedBooking)
+        return res.json(updatedBooking)
     } catch (error) {
         console.error(error);
         return res.status(500).json({ error: 'An error occurred while updating the booking.' });
@@ -94,7 +94,7 @@ async function deleteBooking(req, res) {
         if (deletedCount === 0) {
             return res.status(404).json({ error: 'Booking not found.' });
         }
-        res.json(deletedCount)
+        // res.json(deletedCount)
         return res.status(204).end(); // No content
         
     } catch (error) {

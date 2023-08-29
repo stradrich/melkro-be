@@ -14,7 +14,7 @@ const Payment = sequelize.define(
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
-                model: 'Booking', // Replace 'Booking' with your actual Booking model name
+                model: 'bookings', // Replace 'Booking' with your actual Booking model name
                 key: 'booking_id'
             }
         },

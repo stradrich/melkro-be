@@ -31,6 +31,9 @@ const SpaceListing = sequelize.define(
             type: DataTypes.STRING(255),
             allowNull: false,
         },
+        name: {
+            type: DataTypes.TEXT,
+        },
         description: {
             type: DataTypes.TEXT,
         },
