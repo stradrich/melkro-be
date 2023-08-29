@@ -60,7 +60,7 @@ CREATE TABLE bookings (
 
 
 -- Create payment Table
-CREATE TABLE payment (
+CREATE TABLE payments (
   payment_id INT PRIMARY KEY AUTO_INCREMENT,
   booking_id INT NOT NULL,
   amount DECIMAL(10, 2) NOT NULL,
