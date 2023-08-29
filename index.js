@@ -58,7 +58,9 @@ const RnRRoutes = require("./routes/RnR.routes.js")
 const stripeRoutes = require("./routes/stripe.routes")
 const timeslotRoutes = require("./routes/timeslot.routes.js")
 const userRoutes = require("./routes/user.routes.js")
-const websocketRoutes = require("./routes/websocket.routes.js")
+// const websocketRoutes = require("./routes/websocket.routes.js")
+
+
 
 // I'm using plural for the routes...(hierarchy, higher you see more, lower you see less, authentication at play)
 app.use("/auth", authRoutes)
@@ -70,6 +72,8 @@ app.use("/reviews-ratings", RnRRoutes)
 app.use("/stripe", stripeRoutes)
 app.use("/timeslot", timeslotRoutes)
 app.use("/users", userRoutes)
+
+
 // app.use("/websocket", websocketRoutes)
 
 app.get("/music-space", (req, res) => {

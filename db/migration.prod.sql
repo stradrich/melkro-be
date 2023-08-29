@@ -21,6 +21,7 @@ CREATE TABLE space_listings (
   address_link VARCHAR(255),
   pictures VARCHAR(255),
   availability VARCHAR(255) NOT NULL,
+  name TEXT,
   description TEXT,
   capacity INT NOT NULL,
   createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -60,7 +61,7 @@ CREATE TABLE bookings (
 
 
 -- Create payment Table
-CREATE TABLE payment (
+CREATE TABLE payments (
   payment_id INT PRIMARY KEY AUTO_INCREMENT,
   booking_id INT NOT NULL,
   amount DECIMAL(10, 2) NOT NULL,
@@ -72,7 +73,7 @@ CREATE TABLE payment (
 
 
 -- Create reviews_rating Table
-CREATE TABLE reviews_rating (
+CREATE TABLE reviews_ratings (
   review_id INT PRIMARY KEY AUTO_INCREMENT,
   user_id INT NOT NULL,
   rating INT NOT NULL CHECK (rating >= 1 AND rating <= 5),
@@ -81,4 +82,3 @@ CREATE TABLE reviews_rating (
   updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
-

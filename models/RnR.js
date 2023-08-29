@@ -2,7 +2,7 @@ const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db.config');
 
 const ReviewRating = sequelize.define(
-    "reviews_ratings",
+    "reviews_rating",
     {
         review_id: {
             type: DataTypes.INTEGER,
