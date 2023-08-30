@@ -8,13 +8,13 @@ const Payment = sequelize.define(
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true,
-            field: "payment_id" // Match the field name from your database
+            field: "payment_id"
         },
         booking_id: {
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
-                model: 'bookings', // Replace 'Booking' with your actual Booking model name
+                model: 'bookings',
                 key: 'booking_id'
             }
         },
@@ -22,9 +22,17 @@ const Payment = sequelize.define(
             type: DataTypes.DECIMAL(10, 2),
             allowNull: false
         },
-        payment_method: {
-            type: DataTypes.STRING(255),
+        amount_total: {
+            type: DataTypes.DECIMAL(10, 2), // Adjust the precision and scale as needed
             allowNull: false
+        },
+        payment_method_types: {
+            type: DataTypes.JSON,
+            allowNull: false
+        },
+        status: {
+            type: DataTypes.STRING(255),
+            // defaultValue: "incomplete"
         },
         createdAt: {
             type: DataTypes.DATE,

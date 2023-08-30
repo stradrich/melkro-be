@@ -77,32 +77,34 @@ async function viewAllListings(req, res) {
 // update listing
 async function updateListing(req, res) {
     const listingId = req.params.id;
-   
+
     try {
-        // Update the listing in your database
-        const [updatedCount, updatedListing] = await SpaceListing.update(req.body, {
-            where: { listing_id: listingId },
-            returning: true,
+        const listing = await SpaceListing.findByPk(listingId);
+
+        if (!listing) {
+            return res.status(404).json({ error: 'Listing not found.' });
+        }
+
+        if (!listing.stripeProductId) {
+            return res.status(400).json({ error: 'Stripe product ID is missing for this listing.' });
+        }
+
+        await stripe.products.update(listing.stripeProductId, {
+            name: req.body.name,
+            description: req.body.description,
+            // ... other properties to update
         });
-        if (updatedCount === 0) {
-            return res.status(404).json({ error: "Listing not found. "});
-        }
 
-        // Update the Stripe product if it exists
-        if (updatedListing.stripeProductId) {
-            await stripe.products.update(updatedListing.stripeProductId, {
-                name: updatedListing.name,
-                description: updatedListing.description,
-                // ... other properties you want to update
-            });
-        }
+        await listing.update(req.body);
 
-        return res.json(updatedListing);
+        return res.status(200).json(listing);
     } catch (error) {
         console.error(error);
-        return res.status(500).json({ error: 'An error occurred while updating the listing. '});
+        return res.status(500).json({ error: 'An error occurred while updating the listing.' });
     }
 }
+
+
 
 
 
@@ -126,32 +128,28 @@ async function updateListing(req, res) {
 // delete listing 
 async function deleteListing(req, res) {
     const listingId = req.params.id;
+
     try {
-        // Retrieve the listing to get the stripeProductId
+        // Find the listing in the database
         const listing = await SpaceListing.findByPk(listingId);
+
         if (!listing) {
-            return res.status(404).json({ error: 'Listing not found. '});
+            return res.status(404).json({ error: 'Listing not found.' });
         }
 
-        // Delete the product from Stripe
-        if (listing.stripeProductId) {
-            await stripe.products.del(listing.stripeProductId);
-        }
+        // Delete the listing in the Stripe product
+        await stripe.products.del(listing.stripeProductId);
 
-        // Delete the listing from your database
-        const deletedCount = await SpaceListing.destroy({
-            where: { listing_id: listingId }, 
-        });
-        if (deletedCount === 0) {
-            return res.status(404).json({ error: 'Listing not found. '});
-        }
+        // Delete the listing in the database
+        await listing.destroy();
 
-        return res.json(deletedCount);
+        return res.status(204).send();
     } catch (error) {
         console.error(error);
-        return res.status(500).json({ error: 'An error occurred while deleting the listing. '});
+        return res.status(500).json({ error: 'An error occurred while deleting the listing.' });
     }
 }
+
 
 
 // async function deleteListing(req, res) {

@@ -1,6 +1,7 @@
 const express = require('express');
 const SpaceListing = require('../models/Listing');
 const Payment = require("../models/Payment")
+const Booking = require("../models/Booking")
 const stripe = require('stripe')(process.env.STRIPE_KEY);
 const router = express.Router()
 
@@ -73,83 +74,64 @@ router.post('/create-checkout-session', async (req, res) => {
 
 });
 
-
-
-
-
-
 // Stripe Webhook 
-const crypto = require('crypto');
 const db = require('../models/Payment'); // Replace with your database module or configuration
 
-const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
+// const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
 router.post('/webhook', express.raw({ type: 'application/json' }), async (req, res) => {
-  console.log('checkpoint 1');
-  // Retrieve the stripe-signature header from both req.get and req.headers. This header contains the expected signature sent by Stripe to verify the authenticity of the webhook event.
-  const sigHeader = req.get('stripe-signature'); // Get the stripe-signature header
-
-  const sig = req.headers['stripe-signature'];
-
-  let event;
   try {
-    console.log('checkpoint 2');
-    // Construct event object from the request body, the calculated signature (sig), and the endpointSecret. This method verifies that the event is indeed sent by Stripe and hasn't been tampered with.
-    event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
-  } catch (err) {
-    console.log('checkpoint 3');
-    res.status(400).send(`Webhook Error: ${err.message}`);
-    return;
-  }
-
-  // Calculate the expected signature
-  // Payload is calculated by serializing the request body as a JSON string. This payload will be used to verify the signature.
-  const payload = JSON.stringify(req.body);
-  console.log('Original Payload:', payload);
-  // The crypto module is used to calculate the expected signature using the payload and the endpointSecret from your environment variables.
-  const expectedSig = crypto
-    .createHmac('sha256', endpointSecret)
-    .update(payload)
-    .digest('hex');
-
-    console.log('checkpoint 4');
-    console.log("Payload:", payload);
-    console.log('Calculated Signature:', expectedSig);
-
-  // Compare the calculated signature with the header signature
-  if (sigHeader !== expectedSig) {
-    console.log('checkpoint 5');
-    return res.status(400).send('Webhook signature verification failed');
-  }
-
-  // Handle the event
-  // Inside the event switch case, the code checks if the event type is 'checkout.session.completed'. If it is, it means a payment was successfully completed, and the code proceeds to extract the payment details and handle the insertion of the payment data into the database.
-  switch (event.type) {
-    case 'checkout.session.completed':
-      const checkoutSession = event.data.object;
-      const paymentData = {
-        booking_id: checkoutSession.client_reference_id,
-        amount: checkoutSession.amount_total / 100,
-        payment_method: checkoutSession.payment_method_types[0],
-      };
-
-      // Insert payment data into your database
-      try {
-        console.log('checkpoint 6');
-        await db.query('INSERT INTO payments SET ?', paymentData);
-        console.log('Payment data inserted into the database');
-      } catch (error) {
-        console.log('checkpoint 7');
-        console.error('Error inserting payment data into the database:', error);
-      }
-      break;
-    default:
+    const event = req.body;
+    if (event.type !== "checkout.session.completed") {
       console.log(`Unhandled event type ${event.type}`);
-  }
+      return res.send();
+    }
 
-  // Return a 200 response to acknowledge receipt of the event
-  res.send();
+    const payload = event.data.object;
+
+     // Extract the required values from the Stripe webhook payload
+     const { booking_id, amount_total, payment_method_types } = payload;
+
+    // Update payment data in your database
+    const paymentData = {
+      booking_id: booking_id,
+      amount: amount_total,
+      amount_total: amount_total,
+      payment_method: payment_method_types[0], // Assuming it's an array
+      status: "complete"
+  };
+
+    // Update booking data in your database
+    const bookingData = {
+        booking_id: booking_id,
+        status: "confirmed"
+    };
+
+    // Update payment status to "complete"
+    // Didn't update automatically, why?
+    await Payment.update(paymentData, { where: { booking_id: booking_id } });
+
+    // Update booking status to "confirmed"
+    // Didn't update automatically, why?
+    await Booking.update(bookingData, { where: { booking_id: booking_id } });
+
+    try {
+      console.log('Updating payment data for booking:', paymentData.booking_id);
+      await db.query('UPDATE payments SET amount = ?, payment_method = ? WHERE booking_id = ?', [paymentData.amount, paymentData.payment_method, paymentData.booking_id]);
+      console.log('Payment data updated in the database');
+    } catch (error) {
+      console.error('Error updating payment data in the database:', error);
+    }
+
+    res.send();
+  } catch (error) {
+    console.log(error);
+    res.status(500).send('Internal Server Error');
+  }
 });
+
+
+
 
 
 

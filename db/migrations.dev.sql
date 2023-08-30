@@ -16,6 +16,7 @@ CREATE TABLE users (
 -- Create space_listings Table (size - studio/chamber hall/concert hall, sound proof or no sound proof)
 CREATE TABLE space_listings (
   listing_id INT PRIMARY KEY AUTO_INCREMENT,
+  stripeProductId VARCHAR(255), -- New column for Stripe Product ID
   user_id INT NOT NULL,
   price_per_hour DECIMAL(10, 2) NOT NULL,
   address_link VARCHAR(255),
@@ -65,11 +66,16 @@ CREATE TABLE payments (
   payment_id INT PRIMARY KEY AUTO_INCREMENT,
   booking_id INT NOT NULL,
   amount DECIMAL(10, 2) NOT NULL,
-  payment_method VARCHAR(255) NOT NULL,
+  amount_total DECIMAL(10, 2) NOT NULL,
+  payment_method VARCHAR(255) DEFAULT 'Credit Card', -- Set a default value here
+  payment_method_types JSON NOT NULL,
+  status VARCHAR(255) DEFAULT 'incomplete',
   createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   FOREIGN KEY (booking_id) REFERENCES bookings(booking_id) ON DELETE CASCADE ON UPDATE CASCADE 
 );
+
+
 
 
 -- Create reviews_rating Table
