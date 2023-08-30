@@ -78,7 +78,7 @@ STRIPE_WEBHOOK_SECRET=
 
 ### Database Setup
 
-Ensure the necessary database configurations are in place based on the provided ERD(https://www.notion.so/Sigma-School-Final-Project-16e6471193344f18bc31603dabb04297?pvs=4) and database structure.
+Ensure the necessary database configurations are in place based on the provided ERD and database structure.
 
 ### Running the Application
 
