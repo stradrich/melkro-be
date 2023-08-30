@@ -8,6 +8,9 @@ const SpaceListing = sequelize.define(
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true,
+        },   
+        stripeProductId: {
+            type: DataTypes.STRING, // Store the Stripe Product ID
         },
         user_id: {
             type: DataTypes.INTEGER,
@@ -52,5 +55,22 @@ const SpaceListing = sequelize.define(
         },
     }
 );
+
+
+SpaceListing.addHook('afterCreate', async (listing) => {
+    try {
+        // Create a Stripe product for the new listing
+        const stripeProduct = await stripe.products.create({
+            name: listing.name,
+            description: listing.description,
+            // ... other properties
+        });
+
+        // Store the Stripe product ID in the listing
+        await listing.update({ stripeProductId: stripeProduct.id });
+    } catch (error) {
+        console.error('Error creating Stripe product:', error);
+    }
+});
 
 module.exports = SpaceListing;

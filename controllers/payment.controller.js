@@ -1,32 +1,40 @@
 const Payment = require('../models/Payment');
+const Booking = require('../models/Booking')
 
 // Create
 const createPayment = async (req, res) => {
-    console.log("checkpoint 1");
     try {
-        const { booking_id, amount, payment_method } = req.body;
+        const { booking_id, amount, amount_total, payment_method, payment_method_types, status } = req.body;
 
         // Create a new payment record in the SQL database
         const paymentRecord = await Payment.create({
             booking_id: booking_id,
             amount: amount,
+            amount_total: amount_total,
             payment_method: payment_method,
+            payment_method_types: payment_method_types,
+            status: status,
         });
 
-        console.log("checkpoint 2");
-        
+        // Check if the payment status is "complete" and update the corresponding booking status
+        if (status === "complete") {
+            await Booking.update({ status: "confirmed" }, { where: { booking_id: booking_id } });
+        }
+
         const response = {
             message: 'Payment record created successfully',
             paymentRecord: paymentRecord
         };
-        
-        console.log("checkpoint 3", paymentRecord);
+
         return res.status(201).json(response);
     } catch (error) {
         console.error('Error creating Payment:', error);
         return res.status(500).json({ error: 'Error creating Payment' });
     }
-}
+};
+
+
+
 
 // Read (by id)
 async function getPaymentById(req, res) {
