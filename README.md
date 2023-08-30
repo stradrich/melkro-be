@@ -37,6 +37,9 @@ TBC
   - jsonwebtoken: JSON Web Tokens for authentication
 - **Services:**
   - Stripe: Payment processing
+  - Stripe Webhook
+  - RequestBin: Inspect, capture, and analyze HTTP requests, testing and debugging webhook implementations; provides a temporary URL that you can use as a webhook endpoint
+  - Pipedream: Create workflow that listens for incoming webhook events, processes them, and performs various actions based on the data
   - Websocket: Real-time messaging
   - Mailgun.js: Email communication
   - Google Cloud Platform: Deployment and hosting
