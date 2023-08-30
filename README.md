@@ -70,6 +70,10 @@ PORT=
 SECRET_KEY=
 MAILGUN_DOMAIN=
 MAILGUN_API_KEY=
+STRIPE_PUBLISHABLE_KEY=
+STRIPE_KEY=
+CLIENT_URL=
+STRIPE_WEBHOOK_SECRET=
 ```
 
 ### Database Setup
@@ -92,7 +96,28 @@ npm run prod
 
 ## API Routes
 
-TBC
+Health
+GET http://localhost:8080/
+GET http://localhost:8080/music-space
+
+Auth
+POST http://localhost:8080/auth/register
+POST http://localhost:8080/auth/verify
+POST http://localhost:8080/auth/login
+
+Listing
+POST http://localhost:8080/listings/
+GET http://localhost:8080/listings/
+GET http://localhost:8080/listings/listing/:id
+PUT http://localhost:8080/listings/listing/:id
+DEL http://localhost:8080/listings/listing/:id
+
+Timeslot 
+POST http://localhost:8080/timeslot/timeslot
+GET http://localhost:8080/timeslot/timeslot
+GET http://localhost:8080/timeslot/timeslot/:id
+PUT http://localhost:8080/timeslot/timeslot/:id
+DEL http://localhost:8080/timeslot/timeslot/:id
 
 ## Deployment Strategy
 
