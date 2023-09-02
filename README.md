@@ -96,7 +96,7 @@ npm run prod
 
 ## API Routes
 
-Health
+```Health
 GET http://localhost:8080/
 GET http://localhost:8080/music-space
 
@@ -150,7 +150,7 @@ POST http://localhost:8080/users
 GET http://localhost:8080/users/users
 GET http://localhost:8080/users/:id
 PUT http://localhost:8080/users/:id
-DELETE http://localhost:8080/users/:id
+DELETE http://localhost:8080/users/:id```
 
 ## Deployment Strategy
 
