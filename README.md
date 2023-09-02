@@ -145,6 +145,13 @@ GET http://localhost:8080/reviews-ratings//reviews-ratings/:id
 PUT http://localhost:8080/reviews-ratings//reviews-ratings/:id
 DEL http://localhost:8080/reviews-ratings//reviews-ratings/:id
 
+User
+POST http://localhost:8080/users
+GET http://localhost:8080/users/users
+GET http://localhost:8080/users/:id
+PUT http://localhost:8080/users/:id 
+DEL http://localhost:8080/users/:id 
+
 ## Deployment Strategy
 
 TBC
