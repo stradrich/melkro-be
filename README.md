@@ -94,9 +94,22 @@ For production deployment, use:
 npm run prod
 ```
 
+## Deployment Strategy
+
+TBC
+
+## Contributing
+
+TBC
+
+## Copyright
+
+Copyright (c) 2023 Aldrich Pinso
+
 ## API Routes
 
-```Health
+```
+Health
 GET http://localhost:8080/
 GET http://localhost:8080/music-space
 
@@ -152,19 +165,7 @@ GET http://localhost:8080/users/:id
 PUT http://localhost:8080/users/:id
 DELETE http://localhost:8080/users/:id```
 
-## Deployment Strategy
-
-TBC
-
-## Contributing
-
-TBC
-
-## Copyright
-
-Copyright (c) 2023 Aldrich Pinso
-
-
+```
 ## File Structure
 
 ```
