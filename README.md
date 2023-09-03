@@ -163,7 +163,7 @@ POST http://localhost:8080/users
 GET http://localhost:8080/users/users
 GET http://localhost:8080/users/:id
 PUT http://localhost:8080/users/:id
-DELETE http://localhost:8080/users/:id```
+DELETE http://localhost:8080/users/:id
 
 ```
 ## File Structure
