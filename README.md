@@ -1,6 +1,8 @@
 # music-space-API
 
-This repository contains the backend code for the music-space-API. The project aims to address a real-world problem while exploring the business potential in creating an application.
+This repository contains the backend code for the music-space-API. 
+
+The Music Space App is a platform that connects musicians from different level (amateurs, music major, music teachers, concert performers, recording artists), allowing them to share and discover practice, rehearsal, recording spaces in different cities. The app aims to foster collaboration, creativity, and community among musicians, making it easier for local and travelling musicians to find suitable spaces for rehearsals and collaborations. 
 
 ## Table of Contents
 
