@@ -6,6 +6,10 @@ The Music Space App is a platform that connects musicians from different level (
 
 At the same time, local music centres or studios or conservatory can maximise their profit by renting out their unused space through The Music Space App. By listing their available rooms, studios or performance spaces on the platform, these establishments can tap into a broader network of musicians and music enthusiasts, effectively turning their under-utilised areas into profitable assets. 
 
+Target Audiences:
+
+The app targets musicians or artists of all levels who seek spaces for practicing their art, they can also collaborate and network with other musicians. It appeals to both local musicians looking to share their spaces and travelling artists in need of private temporary spaces. This service can be expanded into other artistic engagement like dance, theather, visual art, etc.
+
 ## Table of Contents
 
 - [Brief Overview](#brief-overview)
