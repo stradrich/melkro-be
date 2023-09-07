@@ -10,6 +10,21 @@ Target Audiences:
 
 The app targets musicians or artists of all levels who seek spaces for practicing their art, they can also collaborate and network with other musicians. It appeals to both local musicians looking to share their spaces and travelling artists in need of private temporary spaces. This service can be expanded into other artistic engagement like dance, theather, visual art, etc.
 
+Benefits for artists (Musician):
+
+1. Access to diverse spaces for music making
+2. Convenience and Flexibility 
+3. Cost-Effective Solutions
+4. Opportunities for Collaborations
+5. Exploration of new locations
+6. User-Generated Content
+7. Network and Industry Exposure 
+8. User Reviews and Recommendations
+9. Supportive Music Community
+10. Enhanced Creativity and Inspiration
+11. Access to Professional Equipment
+12. Community Events
+
 ## Table of Contents
 
 - [Brief Overview](#brief-overview)
