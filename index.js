@@ -95,7 +95,7 @@ sequelize.sync()
       console.log('🎉 Database synced successfully');
    })
    .catch((error) => {
-      console.error('🤯 Error syncing database:', error);
+      console.error('🤯 Error syncing database:', error, `Please check Docker and Beekeeper, ignore this if you've uploaded DB on digital ocean`);
    });
 
 // 3. Check third-party service availability
@@ -125,7 +125,7 @@ app.get('/check-stripe', async (req, res) => {
 
 // Start the server
 app.listen(3000, () => {
-    console.log('Server is running on port 3000');
+    console.log('Server is running on port 8080');
 });
 
 

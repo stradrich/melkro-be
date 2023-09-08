@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 // - Implement user model
 const User = require("../models/User");
 const { hashPassword, comparePassword } = require("../utils/bcrypt.util.js")
-const { mg } = require("../utils/mailgun.util.js");
+// const { mg } = require("../utils/mailgun.util.js");
 
 // - Implement user registration and authentication
 async function register(req, res) {
