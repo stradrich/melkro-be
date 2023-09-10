@@ -25,6 +25,19 @@ Benefits for artists (Musician):
 11. Access to Professional Equipment
 12. Community Events
 
+Benefits for music space providers:
+
+1. Additional Revenue Stream (hourly/daily/weekly rates)
+2. Optimal Space Utilisation (specialised spaces: soundproof room, recording studios, rehearsal hall; extra charges for equipment rental)
+3. Expanded Reach 
+4. Promotion and Exposure (programs: classes, work opportunities, workshops, masterclasses)
+5. Networking Opportunities 
+6. Feedback and Improvements
+7. Community Engagement 
+8. Justifiable Flexible Pricing (Premium subscription/membership plans)
+9. Enhanced Reputation 
+10. Ads and Sponsorship
+
 ## Table of Contents
 
 - [Brief Overview](#brief-overview)
