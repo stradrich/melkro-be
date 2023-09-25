@@ -3,7 +3,10 @@ const app = express();
 const cors = require("cors")
 const morgan = require("morgan")
 
-
+if (typeof window === 'undefined') {
+    // Load node-jose only in a server environment
+    const jose = require('node-jose');
+  }
 
 // Load environment variables. See .env file for available variables.
 // This should be done before loading variables from process.env
@@ -40,6 +43,7 @@ const morganConfig = morgan(function (token, req, res) {
 })
 
 // Middlewares
+app.use(cors());
 app.use(express.json());
 app.use(morganConfig);
 
@@ -133,6 +137,7 @@ app.listen(3000, () => {
 
 // Start the server
 const port = process.env.PORT || 8080;
+// const port = process.env.PORT || 5174;
 app.listen(port, async () => {
     try {
         await sequelize.authenticate();

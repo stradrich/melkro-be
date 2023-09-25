@@ -9,9 +9,13 @@ CREATE TABLE users (
   password VARCHAR(255) NOT NULL,
   is_verified BOOLEAN DEFAULT false,
   role ENUM('admin', 'provider', 'customer') DEFAULT 'customer',
+  firstName VARCHAR(255),
+  lastName VARCHAR(255),
+  major ENUM('Piano', 'Violin', 'Cello', 'Guitar', 'Others'),
   createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
+
 
 -- Create space_listings Table (size - studio/chamber hall/concert hall, sound proof or no sound proof)
 CREATE TABLE space_listings (

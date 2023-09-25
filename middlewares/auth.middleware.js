@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken")
 // This is not used.... 🛠
-const { login } = require("../controllers/auth.controller")
+// const { login } = require("../controllers/auth.controller")
 
 
 function verifyToken(req, res, next) {
@@ -38,6 +38,63 @@ function checkRoles(roles) {
         return next()
     }
 }
+
+async function login(email, password) {
+    try {
+        // Client-side validation
+        if (!email || !password) {
+            throw new Error('Email and password are required.');
+        }
+
+        const options = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password })
+        };
+
+        // Make a POST request to your authentication endpoint
+        const response = await fetch('http://localhost:8080/auth/login', options);
+
+        if (!response.ok) {
+            const data = await response.json();
+            throw new Error(data.message || 'Login failed.');
+        }
+
+        const data = await response.json();
+        const accessToken = data.accessToken;
+
+        // Save access token to local storage
+        localStorage.setItem('access_token', accessToken);
+
+        // Use the verifyToken middleware to decode and verify the token
+        const decodedToken = jwt.decode(accessToken);
+
+        if (decodedToken) {
+            // Set user information based on the decoded token
+            this.currentUser = {
+                id: decodedToken.id,
+                email: decodedToken.email,
+                role: decodedToken.role // Assuming your token contains a "role" field
+            };
+
+            // Check the user's role and redirect accordingly
+            if (this.currentUser.role === 'spaceProvider') {
+                // Redirect to the spaceProvider profile page
+                router.push(`/profile/spaceProvider/${this.currentUser.id}`);
+            } else if (this.currentUser.role === 'spaceUser') {
+                // Redirect to the spaceUser profile page
+                router.push(`/profile/spaceUser/${this.currentUser.id}`);
+            }
+
+            this.userLoggedIn = true;
+            return this.currentUser.id;
+        }
+    } catch (error) {
+        router.push('/login');
+        console.error(error);
+    }
+}
+
 
 module.exports = {
     verifyToken,

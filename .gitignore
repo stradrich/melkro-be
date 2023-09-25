@@ -3,6 +3,5 @@ node_modules
 checklists.md
 ideas.md 
 README_private.md
-Dockerfile.dev
-Dockerfile.prod
+.dockerignore
 
