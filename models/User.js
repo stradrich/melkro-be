@@ -22,6 +22,12 @@ const User = sequelize.define(
             type: DataTypes.STRING(255),
             allowNull: false,
         },
+        firstName: {
+            type: DataTypes.STRING(255),
+        },
+        lastName: {
+            type: DataTypes.STRING(255),
+        },
         is_verified: {
             type: DataTypes.BOOLEAN,
             defaultValue: false,
@@ -29,6 +35,9 @@ const User = sequelize.define(
         role: {
             type: DataTypes.ENUM('admin', 'provider', 'customer'),
             defaultValue: 'customer',
+        },
+        major: {
+            type: DataTypes.ENUM('Piano', 'Violin', 'Cello', 'Guitar', 'Others'),
         },
         createdAt: {
             type: DataTypes.DATE,
