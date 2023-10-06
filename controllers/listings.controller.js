@@ -5,8 +5,27 @@ const stripe = require('stripe')(process.env.STRIPE_KEY);
 
 async function createListing(req, res) {
     try {
+        console.log('Request Payload:', req.body);
+        // Create the listing in your database 
+        const { listingData: { name, price_per_hour, ...otherFields } } = req.body;
+    
+        console.log('Extracted Data:', { name, price_per_hour, ...otherFields });
+        
+        if (!name) {
+            return res.status(400).json({ error: 'Name is required in the request.' });
+        }
+
         // Create the listing in your database
-        const newListing = await SpaceListing.create({...req.body});
+        const newListing = await SpaceListing.create({
+        user_id: otherFields.user_id ? otherFields.user_id : null,
+        price_per_hour: parseFloat(price_per_hour), // Ensure it's a valid decimal
+           name: name,
+           ...otherFields,
+            });
+
+        console.log('New Listing:', newListing);
+        console.log(name)
+
 
         // Create a Stripe product for the new listing
         const stripeProduct = await stripe.products.create({
@@ -19,6 +38,7 @@ async function createListing(req, res) {
 
         // Store the Stripe product ID in your listing
         newListing.stripeProductId = stripeProduct.id;
+        console.log('Stripe Product ID:', newListing.stripeProductId);
         await newListing.save();
 
         return res.status(201).json(newListing);
@@ -169,10 +189,35 @@ async function deleteListing(req, res) {
 //     }
 // }
 
+const listingController = {
+    createListing: (req, res) => {
+      console.log('Received Payload:', req.body);
+  
+      // Rest of your code for creating a listing
+      // Make sure to handle errors and send appropriate responses
+  
+      // For example, you might have something like:
+      try {
+        // Your code to create a listing
+        // ...
+        // Send a success response
+        res.status(201).json({ message: 'Listing created successfully' });
+      } catch (error) {
+        // Log the error
+        console.error('Error creating listing:', error);
+        // Send an error response
+        res.status(500).json({ error: 'An error occurred while creating the listing.' });
+      }
+    },
+  
+    // Other methods
+  };
+
 module.exports = {
     createListing,
     viewListing,
     viewAllListings,
     updateListing,
-    deleteListing
+    deleteListing,
+   listingController
 }

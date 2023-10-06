@@ -1,5 +1,10 @@
 const express = require("express");
+const bodyParser = require('body-parser');
+const { verifyToken, checkRoles } = require('./middlewares/auth.middleware')
+
+
 const app = express();
+
 const cors = require("cors")
 const morgan = require("morgan")
 
@@ -46,6 +51,7 @@ const morganConfig = morgan(function (token, req, res) {
 app.use(cors());
 app.use(express.json());
 app.use(morganConfig);
+app.use(bodyParser.json());
 
 const sequelize = require("./config/db.config.js")
 sequelize.options.hooks = {};

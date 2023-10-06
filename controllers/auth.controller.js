@@ -36,9 +36,9 @@ async function register(req, res) {
         role: user.role,
         username: user.username,
         password: user.password,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        major: user.major
+        // firstName: user.firstName,
+        // lastName: user.lastName,
+        // major: user.major
       };
 
       console.log(tokenPayload.name);
@@ -90,62 +90,114 @@ async function register(req, res) {
     }
   }
   
-  
-
-async function verifyEmail(req, res) {
+  async function verifyEmail(req, res) {
     try {
-    // Get verification token from req body
-    const { verificationToken } = req.body;
-    console.log(verificationToken);
+        // Get verification token from req body
+        const { verificationToken } = req.body;
+        console.log(verificationToken);
 
-    if (!verificationToken) throw "Invalid verification token"
+        if (!verificationToken) throw "Invalid verification token";
 
-    // Verify & decode token & get user id 
-    const decoded = jwt.verify(verificationToken, process.env.SECRET_KEY)
-    console.log(`decoded:`, decoded);
+        // Verify & decode token & get user id 
+        const decoded = jwt.verify(verificationToken, process.env.SECRET_KEY);
+        console.log(`decoded:`, decoded);
 
-    const user = await User.findOne({
-        where: {
-            email: decoded.email
-        }
-    })
-
-    // Update user to verified
-    await User.update(
-        {
-            isVerified: true,
-        },
-        {
+        const user = await User.findOne({
             where: {
-                email: decoded.email,
+                email: decoded.email
+            }
+        })
+
+        // Update user to verified
+        await User.update(
+            {
+                isVerified: true,
             },
-        }
-    );
-    console.log("checkpoint 3");
+            {
+                where: {
+                    email: decoded.email,
+                },
+            }
+        );
 
-
-    // Prepare email data
-    const data = {
-        from: "mailgun@" + process.env.MAILGUN_DOMAIN,
-        to: user.email,
-        subject: "Account Verified",
-        html: `
+        // Prepare email data
+        const data = {
+            from: "mailgun@" + process.env.MAILGUN_DOMAIN,
+            to: user.email,
+            subject: "Account Verified",
+            html: `
                 <h3>Your account is now verified</h3>
             `,
-    };
-    console.log("checkpoint 4");
+        };
+        console.log("checkpoint 4");
 
-    // Send email to user
-    await mg.messages.create(process.env.MAILGUN_DOMAIN, data)
+        // Send email to user
+        await mg.messages.create(process.env.MAILGUN_DOMAIN, data)
 
-    // Send success message
-    return res.send({
-        message: "Account Verified",
-    });
+        // Send success message
+        return res.send({
+            message: "Account Verified",
+        });
     } catch (error) {
-        return res.status(500).json({ error: error});
+        return res.status(500).json({ error: error });
     }
 }
+
+
+// async function verifyEmail(req, res) {
+//     try {
+//     // Get verification token from req body
+//     const { verificationToken } = req.body;
+//     console.log(verificationToken);
+
+//     if (!verificationToken) throw "Invalid verification token"
+
+//     // Verify & decode token & get user id 
+//     const decoded = jwt.verify(verificationToken, process.env.SECRET_KEY)
+//     console.log(`decoded:`, decoded);
+
+//     const user = await User.findOne({
+//         where: {
+//             email: decoded.email
+//         }
+//     })
+
+//     // Update user to verified
+//     await User.update(
+//         {
+//             isVerified: true,
+//         },
+//         {
+//             where: {
+//                 email: decoded.email,
+//             },
+//         }
+//     );
+//     console.log("checkpoint 3");
+
+
+//     // Prepare email data
+//     const data = {
+//         from: "mailgun@" + process.env.MAILGUN_DOMAIN,
+//         to: user.email,
+//         subject: "Account Verified",
+//         html: `
+//                 <h3>Your account is now verified</h3>
+//             `,
+//     };
+//     console.log("checkpoint 4");
+
+//     // Send email to user
+//     await mg.messages.create(process.env.MAILGUN_DOMAIN, data)
+
+//     // Send success message
+//     return res.send({
+//         message: "Account Verified",
+//     });
+//     } catch (error) {
+//         return res.status(500).json({ error: error});
+//     }
+// }
 
 async function getCurrentUser() {
     try {
@@ -240,9 +292,9 @@ async function login(req, res) {
                 role: user.role,
                 username: user.username,
                 password: user.password,
-                firstName: user.firstName,
-                lastName: user.lastName,
-                major: user.major
+                // firstName: user.firstName,
+                // lastName: user.lastName,
+                // major: user.major
             },
             process.env.SECRET_KEY,
             {
