@@ -52,7 +52,6 @@ const Booking = sequelize.define(
         },
         first_instrument: {
             type: DataTypes.TEXT,
-            allowNull: false,
         },
         capacity: {
             type: DataTypes.ENUM('individual', 'less than four', 'band/orchestra'),

@@ -22,19 +22,19 @@ const User = sequelize.define(
             type: DataTypes.STRING(255),
             allowNull: false,
         },
-        firstName: {
-            type: DataTypes.STRING(255),
-        },
-        lastName: {
-            type: DataTypes.STRING(255),
-        },
         is_verified: {
             type: DataTypes.BOOLEAN,
             defaultValue: false,
         },
         role: {
-            type: DataTypes.ENUM('admin', 'provider', 'customer'),
-            defaultValue: 'customer',
+            type: DataTypes.ENUM('admin', 'provider', 'musician'),
+            defaultValue: 'musician',
+        },
+        firstName: {
+            type: DataTypes.STRING(255),
+        },
+        lastName: {
+            type: DataTypes.STRING(255),
         },
         major: {
             type: DataTypes.ENUM('Piano', 'Violin', 'Cello', 'Guitar', 'Others'),

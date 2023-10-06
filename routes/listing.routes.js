@@ -5,7 +5,15 @@ const listingController = require('../controllers/listings.controller')
 const { verifyToken, checkRoles } = require("../middlewares/auth.middleware")
 
 // Create a new listing
-router.post('/', verifyToken, checkRoles(['admin', 'provider']),listingController.createListing);
+
+// router.post('/', verifyToken, checkRoles(['admin', 'provider']),listingController.createListing);
+
+// router.use('/listings', verifyToken, checkRoles(['admin', 'provider']), listingRoutes);
+
+router.post('/', verifyToken, checkRoles(['admin', 'provider']), (req, res) => {
+    // Call the createListing method from the controller
+    listingController.createListing(req, res);
+  });
 
 // View All listings
 router.get('/', verifyToken, checkRoles(['admin', 'provider', 'customer']), listingController.viewAllListings);

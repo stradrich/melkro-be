@@ -1,5 +1,7 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db.config');
+const stripe = require('stripe')(process.env.STRIPE_KEY);
+
 
 const SpaceListing = sequelize.define(
     "space_listing",
@@ -14,7 +16,7 @@ const SpaceListing = sequelize.define(
         },
         user_id: {
             type: DataTypes.INTEGER,
-            allowNull: false,
+            allowNull: true,
             references: {
                 model: 'users',
                 key: 'user_id',
@@ -32,7 +34,6 @@ const SpaceListing = sequelize.define(
         },
         availability: {
             type: DataTypes.STRING(255),
-            allowNull: false,
         },
         name: {
             type: DataTypes.TEXT,
@@ -42,7 +43,6 @@ const SpaceListing = sequelize.define(
         },
         capacity: {
             type: DataTypes.INTEGER,
-            allowNull: false,
         },
         createdAt: {
             type: DataTypes.DATE,

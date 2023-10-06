@@ -30,14 +30,15 @@ const mockUser = {
     }, 1000);
   });
 
-router.post('/auth/register', async (req, res) => {
-    try {
-        await authController.register(req, res); // Call the register function
-        // Do not send a response here
-    } catch (error) {
-        res.status(500).json({ error: "Internal server error" });  
-    }
-});
+// router.post('/auth/register', async (req, res) => {
+//     try {
+//         await authController.register(req, res); // Call the register function
+//         // Do not send a response here
+        
+//     } catch (error) {
+//         res.status(500).json({ error: "Internal server error" });  
+//     }
+// });
 
 
 // Registration endpoint
