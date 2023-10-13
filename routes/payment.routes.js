@@ -8,10 +8,10 @@ const Payment = require('../models/Payment')
 
 // CRUD
 router.post('/payment', verifyToken, checkRoles(['admin', 'provider']), paymentController.createPayment);
-router.get('/payment/:id', verifyToken, checkRoles(['admin', 'provider', 'customer']), paymentController.getPaymentById);
-router.get('/payment/', verifyToken, checkRoles(['admin', 'provider', 'customer']), paymentController.getAllPayments);
-router.put('/payment/:id', verifyToken, checkRoles(['admin', 'provider', 'customer']), paymentController.updatePayment);
-router.delete('/payment/:id', verifyToken, checkRoles(['admin', 'provider', 'customer']), paymentController.deletePayment);
+router.get('/payment/:id', verifyToken, checkRoles(['admin', 'provider', 'musician']), paymentController.getPaymentById);
+router.get('/payment/', verifyToken, checkRoles(['admin', 'provider', 'musician']), paymentController.getAllPayments);
+router.put('/payment/:id', verifyToken, checkRoles(['admin', 'provider', 'musician']), paymentController.updatePayment);
+router.delete('/payment/:id', verifyToken, checkRoles(['admin', 'provider', 'musician']), paymentController.deletePayment);
 
 
 

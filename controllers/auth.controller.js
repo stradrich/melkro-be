@@ -323,12 +323,24 @@ function verifyToken(req, res, next) {
         // Set user in the request object
         req.user = decoded
 
+        // If all OK, proceed to next middleware (if any)
+        return next();
+
     } catch (error) {
-        return res.status(500).json({error: error})
+        if (error.name === 'JsonWebTokenError') {
+            // Token is invalid
+            return res.status(401).json({ error: 'Invalid token' });
+        } else if (error.name === 'TokenExpiredError') {
+            // Token has expired
+            return res.status(401).json({ error: 'Token has expired' });
+        } else {
+            // Other errors
+            return res.status(500).json({ error: 'Internal Server Error' });
+        }
     }
 
-    // If all OK, proceed to next middleware (if any)
-    return next()
+    // // If all OK, proceed to next middleware (if any)
+    // return next()
 }
 
 function checkRole(roles) {

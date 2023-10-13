@@ -36,7 +36,7 @@ router.get(
 router.put(
     '/:userId',
     verifyToken,
-    checkRoles(['admin','provider','customer']),
+    checkRoles(['admin','provider','musician']),
     userController.updateUser
 )
 
@@ -44,7 +44,7 @@ router.put(
 router.delete(
     '/:userId',
     verifyToken,
-    checkRoles(['admin','provider','customer']),
+    checkRoles(['admin','provider','musician']),
     userController.deleteUser
 )
 
