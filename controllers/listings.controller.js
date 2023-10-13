@@ -19,8 +19,8 @@ async function createListing(req, res) {
         const newListing = await SpaceListing.create({
         user_id: otherFields.user_id ? otherFields.user_id : null,
         price_per_hour: parseFloat(price_per_hour), // Ensure it's a valid decimal
-           name: name,
-           ...otherFields,
+        name: name,
+        ...otherFields,
             });
 
         console.log('New Listing:', newListing);
@@ -66,6 +66,7 @@ async function createListing(req, res) {
 
 // view (read) listing
 
+// View listing by Listing ID
 async function viewListing(req, res) {
     const listingId = req.params.id;
     try {
@@ -81,6 +82,25 @@ async function viewListing(req, res) {
     }
 }
 
+// View listing by provider ID?
+// Assuming you have a method in your model or database connection to fetch listings by user_id
+async function viewListingsByUserId(req, res) {
+    console.log('View Listings By User ID Route Accessed');
+    
+    // const userId = req.params.userId; // Assuming you're passing the user ID as a parameter
+  
+    try {
+      // Fetch listings from the database for the given user ID
+      const userlistings = await SpaceListing.findAll({ where: { user_id: req.params.userId } });
+  
+      // Send the listings in the response
+      res.json(userlistings);
+    } catch (error) {
+      console.error('Error fetching user listings:', error);
+      res.status(500).json({ error: 'An error occurred while fetching listings.' });
+    }
+  }
+
 async function viewAllListings(req, res) {
     try {
         const listings = await SpaceListing.findAll();
@@ -95,27 +115,73 @@ async function viewAllListings(req, res) {
 }
  
 // update listing
+// async function updateListing(req, res) {
+//     const listingId = req.params.id;
+
+//     try {
+//         const listing = await SpaceListing.findByPk(listingId);
+
+//         if (!listing) {
+//             return res.status(404).json({ error: 'Listing not found.' });
+//         }
+
+//         if (!listing.stripeProductId) {
+//             return res.status(400).json({ error: 'Stripe product ID is missing for this listing.' });
+//         }
+
+//         await stripe.products.update(listing.stripeProductId, {
+//             name: req.body.name,
+//             description: req.body.description,
+//             // ... other properties to update
+//         });
+
+//         await listing.update(req.body);
+
+//         return res.status(200).json(listing);
+//     } catch (error) {
+//         console.error(error);
+//         return res.status(500).json({ error: 'An error occurred while updating the listing.' });
+//     }
+// }
+
 async function updateListing(req, res) {
     const listingId = req.params.id;
 
     try {
+        console.log('Request Payload:', req.body);
+        
+        // Fetch the listing from your database
         const listing = await SpaceListing.findByPk(listingId);
 
         if (!listing) {
             return res.status(404).json({ error: 'Listing not found.' });
         }
 
-        if (!listing.stripeProductId) {
-            return res.status(400).json({ error: 'Stripe product ID is missing for this listing.' });
+        console.log('Existing Listing:', listing);
+
+        // Update the listing in your database
+        const { name, price_per_hour, ...otherFields } = req.body;
+
+        if (!name) {
+            return res.status(400).json({ error: 'Name is required in the request.' });
         }
 
-        await stripe.products.update(listing.stripeProductId, {
-            name: req.body.name,
-            description: req.body.description,
-            // ... other properties to update
+        await listing.update({
+            // user_id: otherFields.user_id ? otherFields.user_id : null,
+            user_id: otherFields.user_id,
+            price_per_hour: parseFloat(price_per_hour), // Ensure it's a valid decimal
+            name: name,
+            ...otherFields,
         });
 
-        await listing.update(req.body);
+        console.log('Updated Listing:', listing);
+
+        // Update the corresponding Stripe product
+        await stripe.products.update(listing.stripeProductId, {
+            name: listing.name,
+            description: listing.description,
+            // ... other properties
+        });
 
         return res.status(200).json(listing);
     } catch (error) {
@@ -123,6 +189,7 @@ async function updateListing(req, res) {
         return res.status(500).json({ error: 'An error occurred while updating the listing.' });
     }
 }
+
 
 
 
@@ -216,6 +283,7 @@ const listingController = {
 module.exports = {
     createListing,
     viewListing,
+    viewListingsByUserId,
     viewAllListings,
     updateListing,
     deleteListing,
