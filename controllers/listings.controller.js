@@ -85,6 +85,7 @@ async function viewListing(req, res) {
 // View listing by provider ID?
 // Assuming you have a method in your model or database connection to fetch listings by user_id
 async function viewListingsByUserId(req, res) {
+    
     console.log('View Listings By User ID Route Accessed');
     
     // const userId = req.params.userId; // Assuming you're passing the user ID as a parameter

@@ -41,7 +41,7 @@ async function register(req, res) {
         // major: user.major
       };
 
-      console.log(tokenPayload.name);
+      console.log(tokenPayload.username);
       const accessToken = jwt.sign(tokenPayload, process.env.SECRET_KEY, { expiresIn: '1h' });
   
       console.log('Registering a user...');
@@ -91,6 +91,9 @@ async function register(req, res) {
   }
   
   async function verifyEmail(req, res) {
+     // Get the token from the request headers
+    const token = req.headers.authorization;
+
     try {
         // Get verification token from req body
         const { verificationToken } = req.body;
@@ -311,7 +314,8 @@ async function login(req, res) {
 
 function verifyToken(req, res, next) {
     // Get auth header value
-    const token = req.headers["authorization"]
+    // const token = req.headers["authorization"]
+    const token = req.headers.authorization
 
     try {
         // Check if token is undefined
@@ -415,13 +419,15 @@ async function resetPassword(req, res) {
         if(!resetToken) throw "Reset token is required"
 
         const decodedToken = jwt.verify(resetToken, process.env.SECRET_KEY)
-        console.log('Decoded:', decodedToken);
+       
 
         // Extract the user ID from the decoded token
         const userId = decodedToken.id;
 
          // Fetch the user by ID from the database
          const user = await User.findByPk(userId);
+
+          console.log('Decoded:', decodedToken);
 
           // Check if the user exists in your database
         if (!user) {
