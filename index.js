@@ -49,6 +49,12 @@ const morganConfig = morgan(function (token, req, res) {
 
 // Middlewares
 app.use(cors());
+// app.use(cors({
+//     origin: 'http://your-frontend-origin.com',
+//     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+//     credentials: true,
+//     optionsSuccessStatus: 204,
+//   }));
 app.use(express.json());
 app.use(morganConfig);
 app.use(bodyParser.json());
