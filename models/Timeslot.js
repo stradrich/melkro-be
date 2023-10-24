@@ -17,7 +17,10 @@ const Timeslot = sequelize.define(
                 key: 'user_id',
             },
         },
-        timeslot_datetime: {
+        timeslot_datetime_start: {
+            type: DataTypes.DATE,
+        },
+        timeslot_datetime_end: {
             type: DataTypes.DATE,
         },
         createdAt: {
