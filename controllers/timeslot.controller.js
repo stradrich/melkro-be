@@ -5,12 +5,13 @@ const User = require('../models/User')
 async function createTimeslot(req, res) {
   try {
     console.log('checkpoint 1');
-    const { user_id, timeslot_datetime } = req.body;
+    const { user_id, timeslot_datetime_start,timeslot_datetime_end } = req.body;
 
     // Create the timeslot in the database
     const timeslot = await Timeslot.create({
-      user_id,
-      timeslot_datetime,
+      user_id: user_id,
+      timeslot_datetime_start: timeslot_datetime_start,
+      timeslot_datetime_end: timeslot_datetime_end
     });
     console.log('checkpoint 2');
     return res.status(201).json(timeslot);
@@ -22,7 +23,7 @@ async function createTimeslot(req, res) {
 
 // Controller function to get all timeslots
 async function getAllTimeslots(req, res) {
-  console.log("EHE");
+  console.log("See All Timeslots");
   try {
     const timeslots = await Timeslot.findAll();
    return  res.status(200).json(timeslots);

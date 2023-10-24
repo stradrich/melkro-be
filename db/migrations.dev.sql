@@ -16,8 +16,7 @@ CREATE TABLE users (
   updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-
--- Create space_listings Table (size - studio/chamber hall/concert hall, sound proof or no sound proof)
+-- Create space_listings Table (size - studio/chamber hall/concert hall, soundproof or no soundproof)
 CREATE TABLE space_listings (
   listing_id INT PRIMARY KEY AUTO_INCREMENT,
   stripeProductId VARCHAR(255), -- New column for Stripe Product ID
@@ -32,16 +31,6 @@ CREATE TABLE space_listings (
   createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE ON UPDATE CASCADE
-);
-
-CREATE TABLE timeslots (
-  timeslot_id INT PRIMARY KEY AUTO_INCREMENT,
-  user_id INT,
-  timeslot_datetime TIMESTAMP,
-  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE ON UPDATE CASCADE,
-  UNIQUE (user_id, timeslot_datetime)
 );
 
 -- Create bookings Table
@@ -64,6 +53,20 @@ CREATE TABLE bookings (
   FOREIGN KEY (listing_id) REFERENCES space_listings(listing_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
+-- Create timeslots Table
+CREATE TABLE timeslots (
+  timeslot_id INT PRIMARY KEY AUTO_INCREMENT,
+  user_id INT,
+  booking_id INT,  -- Add a reference to the booking
+  timeslot_datetime_start TIMESTAMP,
+  timeslot_datetime_end TIMESTAMP,
+  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (booking_id) REFERENCES bookings(booking_id) ON DELETE CASCADE ON UPDATE CASCADE,
+  CHECK (timeslot_datetime_start < timeslot_datetime_end),
+  UNIQUE (user_id, timeslot_datetime_start, timeslot_datetime_end)
+);
 
 -- Create payment Table
 CREATE TABLE payments (
@@ -78,9 +81,6 @@ CREATE TABLE payments (
   updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   FOREIGN KEY (booking_id) REFERENCES bookings(booking_id) ON DELETE CASCADE ON UPDATE CASCADE 
 );
-
-
-
 
 -- Create reviews_rating Table
 CREATE TABLE reviews_ratings (

@@ -9,31 +9,51 @@ const { verifyToken } = require('../middlewares/auth.middleware'); // Import the
 
 // Create a new booking
 async function createBooking(req, res) {
-    try {// booking.controller.js
-        const Booking = require('../models/Booking');
-        
-        // Create a new booking
-        async function createBooking(req, res) {
-            try {
-                const newBooking = await Booking.create(req.body);
-                return res.status(201).json(newBooking);
-            } catch (error) {
-                console.error(error);
-                return res.status(500).json({ error: 'An error occurred while creating the booking.' });
-            }
-        }
-        
-        // ... other controller functions ...
-        
-        const newBooking = await Booking.create(req.body);
+    try {
+        console.log('checkpoint 1');
+
+        const {
+            listing_id,
+            user_id,
+            // musician_id,
+            status,
+            reminder,
+            check_in,
+            check_out,
+            required_equipments,
+            other_remarks,
+            purpose,
+            first_instrument,
+            capacity,
+            // other properties...
+        } = req.body;
+
+        const newBooking = await Booking.create({
+            listing_id: listing_id,
+            user_id: user_id,
+            // musician_id: musician_id,
+            status: status,
+            reminder: reminder,
+            check_in: check_in,
+            check_out: check_out,
+            required_equipments: required_equipments,
+            other_remarks: other_remarks,
+            purpose: purpose,
+            first_instrument: first_instrument,
+            capacity: capacity,
+            
+        });
+
+        console.log('checkpoint 2');
         return res.status(201).json(newBooking);
     } catch (error) {
         console.error(error);
+        console.log('checkpoint 3');
         return res.status(500).json({ error: 'An error occurred while creating the booking.' });
     }
 }
 
-// ... other controller functions ...
+
 
 
 
