@@ -20,6 +20,7 @@ CREATE TABLE users (
 CREATE TABLE space_listings (
   listing_id INT PRIMARY KEY AUTO_INCREMENT,
   stripeProductId VARCHAR(255), -- New column for Stripe Product ID
+  stripePriceId VARCHAR(255),
   user_id INT,
   price_per_hour DECIMAL(10, 2),
   address_link VARCHAR(255),

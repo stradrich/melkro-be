@@ -14,6 +14,9 @@ const SpaceListing = sequelize.define(
         stripeProductId: {
             type: DataTypes.STRING, // Store the Stripe Product ID
         },
+        stripePriceId: {
+            type: DataTypes.STRING, // Store the Stripe Price ID
+        },
         user_id: {
             type: DataTypes.INTEGER,
             allowNull: true,
