@@ -32,13 +32,32 @@ async function createListing(req, res) {
             name: newListing.name,
             // name: 'Test Sell 1', 
             description: newListing.description,
+            // price: newListing.price_per_hour,
             // price_per_hour: 100.00
+            // unit_amount: Math.round(newListing.price_per_hour * 100), // Convert to cents
+            // unit_amount: 1000, // The amount in cents (for example, $10.00 would be 1000)
+            // currency: 'usd', // The currency
+            // recurring: { 
+            //     interval: 'once',// This makes it a one-time payment
+            // },
             // ... other properties
         });
 
-        // Store the Stripe product ID in your listing
+            // Set the price directly for the product
+        const stripePrice = await stripe.prices.create({
+            product: stripeProduct.id,
+            unit_amount: Math.round(newListing.price_per_hour * 100),
+            // unit_amount: 1000, // The amount in cents (for example, $10.00 would be 1000)
+            currency: 'usd',
+        });
+
+        // Store the Stripe product ID and price IDs in your listing
         newListing.stripeProductId = stripeProduct.id;
         console.log('Stripe Product ID:', newListing.stripeProductId);
+
+        newListing.stripePriceId = stripePrice.id;
+        console.log('Stripe Price ID:', newListing.stripePriceId);
+
         await newListing.save();
 
         return res.status(201).json(newListing);
@@ -177,12 +196,20 @@ async function updateListing(req, res) {
 
         console.log('Updated Listing:', listing);
 
+        // UPDATE PRODUCT NAME AND PRODUCT ID FROM API DOESN'T WORK FOR NOW
         // Update the corresponding Stripe product
         await stripe.products.update(listing.stripeProductId, {
             name: listing.name,
             description: listing.description,
             // ... other properties
         });
+
+           // Update the corresponding Stripe product price
+        //    await stripe.prices.update(listing.stripePriceId, {
+            // unit_amount: Math.round(listing.price_per_hour * 100),
+            // unit_amount: 1000, // The amount in cents (for example, $10.00 would be 1000)
+            // currency: 'usd',
+        // });
 
         return res.status(200).json(listing);
     } catch (error) {
