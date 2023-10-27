@@ -11,7 +11,14 @@ const router = express.Router()
 
 require('dotenv').config()
 
-const YOUR_DOMAIN = 'http://localhost:8080';
+// DON'T DELETE THIS
+// BEFORE DEPLOYMENT OPTION 1:
+// const YOUR_DOMAIN = 'http://localhost:8080';
+
+// DON'T DELETE THIS
+// BEFORE DELOPMENT OPTION 2:
+// Replace YOUR_DOMAIN with the ngrok-generated URL
+const YOUR_DOMAIN = 'https://2480-2001-f40-904-1e47-6512-8999-6131-dc93.ngrok.io';
 
 
 router.post('/create-checkout-session', async (req, res) => {
@@ -61,6 +68,8 @@ router.post('/create-checkout-session', async (req, res) => {
       mode: 'payment',
       success_url: `${process.env.CLIENT_URL}/checkout-success`,
       cancel_url: `${process.env.CLIENT_URL}/cart`,
+      // success_url: `${YOUR_DOMAIN}/checkout-success`,
+      // cancel_url: `${YOUR_DOMAIN}/cart`,
     });
 
     res.send({ url: session.url });
@@ -77,7 +86,7 @@ router.post('/create-checkout-session', async (req, res) => {
 // Stripe Webhook 
 const db = require('../models/Payment'); // Replace with your database module or configuration
 
-// const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
+const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
 router.post('/webhook', express.raw({ type: 'application/json' }), async (req, res) => {
   try {
@@ -92,20 +101,24 @@ router.post('/webhook', express.raw({ type: 'application/json' }), async (req, r
      // Extract the required values from the Stripe webhook payload
      const { booking_id, amount_total, payment_method_types } = payload;
 
+     console.log('Stripe Webhook Payload:', payload);
+
+
     // Update payment data in your database
     const paymentData = {
       booking_id: booking_id,
       amount: amount_total,
       amount_total: amount_total,
       payment_method: payment_method_types[0], // Assuming it's an array
-      status: "complete"
+      // status: "complete"
   };
 
     // Update booking data in your database
     const bookingData = {
         booking_id: booking_id,
-        status: "confirmed"
+        // status: "confirmed"
     };
+    
 
     // Update payment status to "complete"
     // Didn't update automatically, why?

@@ -17,7 +17,8 @@ async function createTimeslot(req, res) {
     return res.status(201).json(timeslot);
   } catch (error) {
     console.log('checkpoint 3');
-   return res.status(500).json({ error: 'Internal server error' });
+    console.error('Error creating timeslot:', error);
+    return res.status(500).json({ error: 'Internal server error' });
   }
 }
 

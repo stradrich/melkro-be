@@ -32,7 +32,7 @@ const Payment = sequelize.define(
         },
         status: {
             type: DataTypes.STRING(255),
-            // defaultValue: "incomplete"
+            defaultValue: "incomplete"
         },
         createdAt: {
             type: DataTypes.DATE,
