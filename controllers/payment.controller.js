@@ -62,9 +62,31 @@ async function getAllPayments(req, res) {
 }
 
 // UPDATE
+// async function updatePayment(req, res) {
+//     try {
+//         const { amount, payment_method } = req.body;
+
+//         // Check if the payment exists
+//         const payment = await Payment.findByPk(req.params.id);
+//         if (!payment) {
+//             return res.status(404).json({ error: 'Payment not found' });
+//         }
+
+//         // Update payment details
+//         payment.amount = amount;
+//         payment.payment_method = payment_method;
+//         await payment.save();
+
+//         return res.json(payment);
+//     } catch (error) {
+//         console.error(error);
+//         return res.status(500).json({ error: 'An error occurred while updating the payment' });
+//     }
+// }
+
 async function updatePayment(req, res) {
     try {
-        const { amount, payment_method } = req.body;
+        const { amount, amount_total, payment_method, payment_method_types, status } = req.body;
 
         // Check if the payment exists
         const payment = await Payment.findByPk(req.params.id);
@@ -73,8 +95,13 @@ async function updatePayment(req, res) {
         }
 
         // Update payment details
-        payment.amount = amount;
-        payment.payment_method = payment_method;
+        payment.amount = amount || payment.amount; // If not provided, keep the existing value
+        payment.amount_total = amount_total || payment.amount_total;
+        payment.payment_method = payment_method || payment.payment_method;
+        payment.payment_method_types = payment_method_types || payment.payment_method_types;
+        payment.status = status || payment.status;
+
+        // Save the updated payment
         await payment.save();
 
         return res.json(payment);
@@ -83,6 +110,7 @@ async function updatePayment(req, res) {
         return res.status(500).json({ error: 'An error occurred while updating the payment' });
     }
 }
+
 
 // DELETE
 async function deletePayment(req, res) {
