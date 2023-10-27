@@ -18,7 +18,7 @@ require('dotenv').config()
 // DON'T DELETE THIS
 // BEFORE DELOPMENT OPTION 2:
 // Replace YOUR_DOMAIN with the ngrok-generated URL
-const YOUR_DOMAIN = 'https://2480-2001-f40-904-1e47-6512-8999-6131-dc93.ngrok.io';
+const YOUR_DOMAIN = 'https://fdf8-2001-f40-904-1e47-58c7-209d-c4ef-875.ngrok-free.app';
 
 
 router.post('/create-checkout-session', async (req, res) => {
@@ -66,10 +66,14 @@ router.post('/create-checkout-session', async (req, res) => {
       payment_method_types: ['card'],
       line_items: lineItems,
       mode: 'payment',
-      success_url: `${process.env.CLIENT_URL}/checkout-success`,
-      cancel_url: `${process.env.CLIENT_URL}/cart`,
+      // success_url: `${process.env.CLIENT_URL}/checkout-success`,
+      // cancel_url: `${process.env.CLIENT_URL}/cart`,
       // success_url: `${YOUR_DOMAIN}/checkout-success`,
       // cancel_url: `${YOUR_DOMAIN}/cart`,
+      success_url: `${YOUR_DOMAIN}/success.html`,
+      cancel_url: `${YOUR_DOMAIN}/cart`,
+      // success_url: `${process.env.CLIENT_URL}/checkout/success?true&session_id={CHECKOUT_SESSION_ID}`, 
+      // cancel_url: `${process.env.CLIENT_URL}/checkout/canceled?session_id={CHECKOUT_SESSION_ID}`,
     });
 
     res.send({ url: session.url });
