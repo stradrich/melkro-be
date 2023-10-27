@@ -10,8 +10,8 @@ const { verifyToken, checkRoles } = require("../middlewares/auth.middleware")
 // role (admin, provider, customer)
 router.post(
     '/',
-    verifyToken,
-    checkRoles(['admin']),
+    // verifyToken,
+    // checkRoles(['admin']),
     userController.createUser,
     // authController.register
 )
@@ -20,23 +20,23 @@ router.post(
 // 1. GET ALL FROM DATABASE (only admin)
 router.get(
     '/users', 
-    verifyToken,
-    checkRoles(['admin']),
+    // verifyToken,
+    // checkRoles(['admin']),
     userController.getAllUsers)
 
 // 2. GET SPECIFIC 
 router.get(
     '/:userId', 
-    verifyToken,
-    checkRoles(['admin','provider']),
+    // verifyToken,
+    // checkRoles(['admin','provider']),
     userController.getUserById)
 
 
 // CRUD - UPDATE
 router.put(
     '/:userId',
-    verifyToken,
-    checkRoles(['admin','provider','musician']),
+    // verifyToken,
+    // checkRoles(['admin','provider','musician']),
     userController.updateUser
 )
 
