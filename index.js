@@ -1,9 +1,12 @@
 const express = require("express");
 const bodyParser = require('body-parser');
 const { verifyToken, checkRoles } = require('./middlewares/auth.middleware')
+const path = require('path');
 
 
 const app = express();
+
+app.use(express.static(path.join(__dirname, 'public')));
 
 const cors = require("cors")
 const morgan = require("morgan")
