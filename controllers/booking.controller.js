@@ -88,25 +88,55 @@ async function viewAllBookings(req, res) {
 // Update a booking by ID
 // Update a booking by ID
 // Update a booking by ID
+// async function updateBooking(req, res) {
+//     const bookingId = req.params.id;
+//     try {
+//         // Explicitly set status to "completed" in the update data
+//         // req.body.status = "pending";
+
+//         const [updatedCount, [updatedBooking]] = await Booking.update(req.body, {
+//             where: { booking_id: bookingId },
+//             returning: true, // Return the updated booking
+//         });
+//         if (updatedCount === 0) {
+//             return res.status(404).json({ error: 'Booking not found.' });
+//         }
+//         return res.json(updatedBooking);
+//     } catch (error) {
+//         console.error(error);
+//         return res.status(500).json({ error: 'An error occurred while updating the booking.' });
+//     }
+// }
+
 async function updateBooking(req, res) {
     const bookingId = req.params.id;
     try {
-        // Explicitly set status to "completed" in the update data
-        req.body.status = "completed";
-
-        const [updatedCount, [updatedBooking]] = await Booking.update(req.body, {
+        const updateResult = await Booking.update(req.body, {
             where: { booking_id: bookingId },
             returning: true, // Return the updated booking
         });
-        if (updatedCount === 0) {
+
+        let updatedBooking;
+        if (Array.isArray(updateResult[1])) {
+            // Destructure the array if it contains multiple elements
+            const [updatedCount, [firstUpdatedBooking]] = updateResult;
+            updatedBooking = firstUpdatedBooking;
+        } else {
+            // Use the single returned value directly
+            updatedBooking = updateResult[1];
+        }
+
+        if (updateResult[0] === 0) {
             return res.status(404).json({ error: 'Booking not found.' });
         }
+
         return res.json(updatedBooking);
     } catch (error) {
         console.error(error);
         return res.status(500).json({ error: 'An error occurred while updating the booking.' });
     }
 }
+
 
 
 // async function updateBooking(req, res) {
