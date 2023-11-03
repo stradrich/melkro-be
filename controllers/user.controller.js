@@ -91,14 +91,14 @@ async function getUserById(req, res) {
 
 // POST (update)
 async function updateUser(req, res) {
-    console.log("testtttttt");
+    console.log("Updating user from backend....");
     try {
     // User can only update their own profile
     // TESTING
 
     const user = await User.findByPk(parseInt(req.params.userId))
     console.log("Update User", user);
-        console.log("current user", req.user);
+    console.log("current user", req.user);
     if(user.user_id !== req.user.id && req.user.role !== 'admin') {
         throw "Cannot update other people's profile"
     } else {

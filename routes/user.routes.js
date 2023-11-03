@@ -35,7 +35,7 @@ router.get(
 // CRUD - UPDATE
 router.put(
     '/:userId',
-    // verifyToken,
+    verifyToken,
     // checkRoles(['admin','provider','musician']),
     userController.updateUser
 )

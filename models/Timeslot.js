@@ -1,6 +1,6 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db.config');
-const User = require('../models/User')
+const User = require('../models/User');
 
 const Timeslot = sequelize.define(
     "timeslots",
@@ -15,6 +15,13 @@ const Timeslot = sequelize.define(
             references: {
                 model: 'users',
                 key: 'user_id',
+            },
+        },
+        booking_id: {
+            type: DataTypes.INTEGER,
+            references: {
+                model: 'bookings',
+                key: 'booking_id',
             },
         },
         timeslot_datetime_start: {

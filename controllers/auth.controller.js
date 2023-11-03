@@ -20,10 +20,17 @@ async function register(req, res) {
         // User with the same email already exists
         return res.status(400).json({ error: 'User already exists' });
       }
+
+    // Log the password before hashing
+     console.log('Original Password:', req.body.password);
   
       // Create user using data from request body.
       // Request body must contain all required fields defined in User model.
-      const hashedPassword = hashPassword(req.body.password);
+      const hashedPassword = await hashPassword(req.body.password);
+
+    // Log the hashed password
+    console.log('Hashed Password:', hashedPassword);
+
       const user = await User.create({
         ...req.body,
         password: hashedPassword,
