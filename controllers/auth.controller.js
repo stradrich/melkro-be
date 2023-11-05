@@ -4,98 +4,161 @@ const User = require("../models/User");
 const { hashPassword, comparePassword } = require("../utils/bcrypt.util.js")
 // const { mg } = require("../utils/mailgun.util.js");
 
+async function register(req, res) {
+    try {
+        // Check if the user with the provided email already exists
+        if (!req.body.email) {
+            return res.status(400).json({ error: 'Email is required' });
+        }
+
+        const userExist = await User.findOne({
+            where: {
+                email: req.body.email,
+            },
+        });
+
+        if (userExist) {
+            // User with the same email already exists
+            return res.status(400).json({ error: 'User already exists' });
+        }
+
+        // Log the password before hashing
+        console.log('Original Password:', req.body.password);
+
+        // Create user using data from the request body.
+        // The request body must contain all required fields defined in the User model.
+        const hashedPassword = await hashPassword(req.body.password);
+
+        // Log the hashed password
+        console.log('Hashed Password:', hashedPassword);
+
+        const user = await User.create({
+            ...req.body,
+            password: hashedPassword,
+        });
+
+        // Now that 'user' is defined, you can use it to create the tokenPayload
+        const tokenPayload = {
+            id: user.id,
+            email: user.email,
+            role: user.role,
+            username: user.username,
+            password: user.password,
+            // firstName: user.firstName,
+            // lastName: user.lastName,
+            // major: user.major
+        };
+
+        console.log(tokenPayload.username);
+        const accessToken = jwt.sign(tokenPayload, process.env.SECRET_KEY, { expiresIn: '1h' });
+
+        console.log('Registering a user...');
+
+        // Send a success response with user and access token
+        return res.status(201).json({
+            // message: "Email verification link sent to user's email",
+            user,
+            accessToken,
+        });
+    } catch (error) {
+        // Handle unexpected errors and send an error response
+        console.error(error);
+        return res.status(500).json({ error: error });
+    }
+}
 
 
 // - Implement user registration and authentication
-async function register(req, res) {
-    try {
-      // Check if the user with the provided email already exists
-      const userExist = await User.findOne({
-        where: {
-          email: req.body.email,
-        },
-      });
+// DON'T DELETE THIS 
+// async function register(req, res) {
+//     try {
+//       // Check if the user with the provided email already exists
+//       const userExist = await User.findOne({
+//         where: {
+//           email: req.body.email,
+//         },
+//       });
   
-      if (userExist) {
-        // User with the same email already exists
-        return res.status(400).json({ error: 'User already exists' });
-      }
+//       if (userExist) {
+//         // User with the same email already exists
+//         return res.status(400).json({ error: 'User already exists' });
+//       }
 
-    // Log the password before hashing
-     console.log('Original Password:', req.body.password);
+//     // Log the password before hashing
+//      console.log('Original Password:', req.body.password);
   
-      // Create user using data from request body.
-      // Request body must contain all required fields defined in User model.
-      const hashedPassword = await hashPassword(req.body.password);
+//       // Create user using data from request body.
+//       // Request body must contain all required fields defined in User model.
+//       const hashedPassword = await hashPassword(req.body.password);
 
-    // Log the hashed password
-    console.log('Hashed Password:', hashedPassword);
+//     // Log the hashed password
+//     console.log('Hashed Password:', hashedPassword);
 
-      const user = await User.create({
-        ...req.body,
-        password: hashedPassword,
-      });
+//       const user = await User.create({
+//         ...req.body,
+//         password: hashedPassword,
+//       });
   
-      // Now that 'user' is defined, you can use it to create the tokenPayload
-      const tokenPayload = {
-        id: user.id,
-        email: user.email,
-        role: user.role,
-        username: user.username,
-        password: user.password,
-        // firstName: user.firstName,
-        // lastName: user.lastName,
-        // major: user.major
-      };
+//       // Now that 'user' is defined, you can use it to create the tokenPayload
+//       const tokenPayload = {
+//         id: user.id,
+//         email: user.email,
+//         role: user.role,
+//         username: user.username,
+//         password: user.password,
+//         // firstName: user.firstName,
+//         // lastName: user.lastName,
+//         // major: user.major
+//       };
 
-      console.log(tokenPayload.username);
-      const accessToken = jwt.sign(tokenPayload, process.env.SECRET_KEY, { expiresIn: '1h' });
+//       console.log(tokenPayload.username);
+//       const accessToken = jwt.sign(tokenPayload, process.env.SECRET_KEY, { expiresIn: '1h' });
   
-      console.log('Registering a user...');
+//       console.log('Registering a user...');
   
-      // Uncomment the code below for sending a verification email
-      /*
-      const token = jwt.sign(
-        {
-          email: user.email,
-        },
-        process.env.SECRET_KEY,
-        {
-          expiresIn: "1h",
-        }
-      );
+//       // Uncomment the code below for sending a verification email
+//       /*
+//       const token = jwt.sign(
+//         {
+//           email: user.email,
+//         },
+//         process.env.SECRET_KEY,
+//         {
+//           expiresIn: "1h",
+//         }
+//       );
   
-      // Email data
-      const data = {
-        from: "mailgun@" + process.env.MAILGUN_DOMAIN,
-        to: user.email,
-        subject: "Verify Your Account",
-        html: `
-          Please click on this link to verify your account:
-          <a href="https://${req.header('Host')}/auth/verify?token=${token}">Verify Account</a>
-          <br>
-          <p>This verification link expires in 1 hour</p>
-        `,
-      };
+//       // Email data
+//       const data = {
+//         from: "mailgun@" + process.env.MAILGUN_DOMAIN,
+//         to: user.email,
+//         subject: "Verify Your Account",
+//         html: `
+//           Please click on this link to verify your account:
+//           <a href="https://${req.header('Host')}/auth/verify?token=${token}">Verify Account</a>
+//           <br>
+//           <p>This verification link expires in 1 hour</p>
+//         `,
+//       };
   
-      // Send email to user with verification link
-      await mg.messages.create(process.env.MAILGUN_DOMAIN, data);
-      */
+//       // Send email to user with verification link
+//       await mg.messages.create(process.env.MAILGUN_DOMAIN, data);
+//       */
   
-      // If user received a verification link, another email will notify the backend
+//       // If user received a verification link, another email will notify the backend
   
-      // Send a success response with user and access token
-      return res.status(201).json({
-        // message: "Email verification link sent to user's email",
-        user,
-        accessToken,
-      });
-    } catch (error) {
-      // Handle unexpected errors and send an error response
-      console.error(error);
-      return res.status(500).json({ error: error });
-    }
-  }
+//       // Send a success response with user and access token
+//       return res.status(201).json({
+//         // message: "Email verification link sent to user's email",
+//         user,
+//         accessToken,
+//       });
+//     } catch (error) {
+//       // Handle unexpected errors and send an error response
+//       console.error(error);
+//       return res.status(500).json({ error: error });
+//     }
+//   }
   
   async function verifyEmail(req, res) {
      // Get the token from the request headers
@@ -425,22 +488,31 @@ async function resetPassword(req, res) {
 
         if(!resetToken) throw "Reset token is required"
 
-        const decodedToken = jwt.verify(resetToken, process.env.SECRET_KEY)
+       // Verify and decode the reset token
+        const decodedToken = jwt.verify(resetToken, process.env.SECRET_KEY);
        
-
         // Extract the user ID from the decoded token
         const userId = decodedToken.id;
+        
+        
+        // Log the decoded token for debugging
+        console.log('Decoded Token:', decodedToken);
+        
+         // Log the user ID for debugging
+         console.log('User ID:', userId);
 
          // Fetch the user by ID from the database
          const user = await User.findByPk(userId);
 
-          console.log('Decoded:', decodedToken);
 
           // Check if the user exists in your database
         if (!user) {
             console.error('User not found in the database');
             return res.status(404).json({ error: 'User not found' });
         }
+
+         // Log the user data for debugging
+         console.log('User Data:', user);
 
         const hashedPassword = hashPassword(newPassword);
 
@@ -449,12 +521,15 @@ async function resetPassword(req, res) {
             { 
                 password: hashedPassword
             },
-            // {
-            //     where: {
-            //         id: decoded.id
-            //     }
-            // }
+            {
+                where: {
+                    id: decoded.id
+                }
+            }
         )
+
+         // Log success message
+         console.log('Password updated successfully');
 
         // Send success response
         res.send("Password updated")
@@ -470,6 +545,7 @@ async function changePassword(req, res) {
     
         const { currentPassword, newPassword } = req.body
 
+        
         if(!currentPassword) throw "Current password is required"
         if(!newPassword) throw "New password is required"
 
