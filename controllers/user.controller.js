@@ -89,24 +89,14 @@ async function getUserById(req, res) {
     }
 }
 
-// POST (update)
+// POST (update - removes all restrictions)
 async function updateUser(req, res) {
     console.log("Updating user from backend....");
     try {
-    // User can only update their own profile
-    // TESTING
-
-    const user = await User.findByPk(parseInt(req.params.userId))
-    console.log("Update User", user);
-    console.log("current user", req.user);
-    if(user.user_id !== req.user.id && req.user.role !== 'admin') {
-        throw "Cannot update other people's profile"
-    } else {
-        const hashedPassword = hashPassword(req.body.password);
+        // Allow any user to update any profile
         const updateUser = await User.update(
             {
                 ...req.body,
-                password: hashedPassword,
             },
             {
                 where: {
@@ -117,12 +107,87 @@ async function updateUser(req, res) {
 
         // Send updated "updateUser" as response
         return res.json(updateUser);
-    }
-        
+
     } catch (error) {
-        return res.status(500).json({ error: error});
+        return res.status(500).json({ error: error });
     }
 }
+
+
+// POST (update - prevents frontend changing the hashed password)
+// async function updateUser(req, res) {
+//     console.log("Updating user from backend....");
+//     try {
+//         // User can only update their own profile
+//         const user = await User.findByPk(parseInt(req.params.userId))
+//         console.log("Update User", user);
+//         console.log("current user", req.user);
+
+//         if (user.user_id !== req.user.id && req.user.role !== 'admin') {
+//             throw "Cannot update other people's profile"
+//         } else {
+//             // Check if the received password matches the existing hashed password
+//             if (req.body.password === user.password) {
+//                 const updateUser = await User.update(
+//                     {
+//                         ...req.body,
+//                     },
+//                     {
+//                         where: {
+//                             user_id: parseInt(req.params.userId),
+//                         },
+//                     }
+//                 );
+
+//                 // Send updated "updateUser" as response
+//                 return res.json(updateUser);
+//             } else {
+//                 // Passwords don't match, handle the case appropriately
+//                 console.error('Received password does not match the existing password');
+//                 return res.status(400).json({ error: 'Invalid password' });
+//             }
+//         }
+
+//     } catch (error) {
+//         return res.status(500).json({ error: error });
+//     }
+// }
+
+
+// POST (update)
+// async function updateUser(req, res) {
+//     console.log("Updating user from backend....");
+//     try {
+//     // User can only update their own profile
+//     // TESTING
+
+//     const user = await User.findByPk(parseInt(req.params.userId))
+//     console.log("Update User", user);
+//     console.log("current user", req.user);
+//     if(user.user_id !== req.user.id && req.user.role !== 'admin') {
+//         throw "Cannot update other people's profile"
+//     } else {
+//         const hashedPassword = hashPassword(req.body.password);
+//         const updateUser = await User.update(
+//             {
+//                 ...req.body,
+//                 password: hashedPassword,
+//             },
+//             {
+//                 where: {
+//                     user_id: parseInt(req.params.userId),
+//                 },
+//             }
+//         );
+
+//         // Send updated "updateUser" as response
+//         return res.json(updateUser);
+//     }
+        
+//     } catch (error) {
+//         return res.status(500).json({ error: error});
+//     }
+// }
 
 // DELETE
 async function deleteUser(req, res) {
