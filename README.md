@@ -2,6 +2,8 @@
 
 This repository contains the backend code for the music-space-API. 
 
+https://www.loom.com/share/df338631d58d42dcb61266cfcf5b2fc4
+
 The Music Space App is a platform that connects musicians from different level (amateurs, music major, music teachers, concert performers, recording artists), allowing them to share and discover practice, rehearsal, recording spaces in different cities. The app aims to foster collaboration, creativity, and community among musicians, making it easier for local and travelling musicians to find suitable spaces for rehearsals and collaborations. 
 
 At the same time, local music centres or studios or conservatory can maximise their profit by renting out their unused space through The Music Space App. By listing their available rooms, studios or performance spaces on the platform, these establishments can tap into a broader network of musicians and music enthusiasts, effectively turning their under-utilised areas into profitable assets. 
