@@ -18,7 +18,7 @@ require('dotenv').config()
 // DON'T DELETE THIS
 // BEFORE DELOPMENT OPTION 2:
 // Replace YOUR_DOMAIN with the ngrok-generated URL
-const YOUR_DOMAIN = 'https://fa22-2001-f40-904-1e47-d553-8275-ac9f-14cb.ngrok-free.app';
+const YOUR_DOMAIN = 'https://7a68-2001-f40-906-16f5-7941-f50e-2a5f-fe5b.ngrok-free.app';
 
 
 router.post('/create-checkout-session', async (req, res) => {
