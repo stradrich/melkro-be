@@ -1,5 +1,5 @@
 {
-  "name": "music-space",
+  "name": "melkro-be",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -8,12 +8,12 @@
     "start": "node index.js",
     "dev": "NODE_ENV=development nodemon index.js",
     "prod": "NODE_ENV=production node index.js",
-    "build:dev": "docker build -t music-space-api-dev:1.0 -f Dockerfile.dev .",
-    "build:prod": "docker build -t music-space-api-prod:1.0 -f Dockerfile.prod .",
-    "run:dev": "docker run -d -p 8080:8080 --name music-space-api-dev music-space-api-dev:1.0",
-    "run:prod": "docker run -d -p 8080:8080 --name music-space-api-prod music-space-api-prod:1.0",
-    "clean:dev": "docker stop music-space-api-dev && docker rm music-space-api-dev",
-    "clean:prod": "docker stop music-space-api-prod && docker rm music-space-api-prod"
+    "build:dev": "docker build -t melkro-api-dev:1.0 -f Dockerfile.dev .",
+    "build:prod": "docker build -t melkro-api-prod:1.0 -f Dockerfile.prod .",
+    "run:dev": "docker run -d -p 8080:8080 --name melkro-api-dev melkro-api-dev:1.0",
+    "run:prod": "docker run -d -p 8080:8080 --name melkro-api-prod melkro-api-prod:1.0",
+    "clean:dev": "docker stop melkro-api-dev && docker rm melkro-api-dev",
+    "clean:prod": "docker stop melkro-api-prod && docker rm melkro-api-prod"
   },
   "keywords": [],
   "author": "",

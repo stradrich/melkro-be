@@ -4,4 +4,7 @@ checklists.md
 ideas.md 
 README_private.md
 .dockerignore
+Dockerfile.dev
+Dockerfile.prod
+
 
