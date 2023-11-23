@@ -2,9 +2,43 @@
 
 This repository contains the backend code for the music-space-API. 
 
+https://www.loom.com/share/df338631d58d42dcb61266cfcf5b2fc4
+
 The Music Space App is a platform that connects musicians from different level (amateurs, music major, music teachers, concert performers, recording artists), allowing them to share and discover practice, rehearsal, recording spaces in different cities. The app aims to foster collaboration, creativity, and community among musicians, making it easier for local and travelling musicians to find suitable spaces for rehearsals and collaborations. 
 
 At the same time, local music centres or studios or conservatory can maximise their profit by renting out their unused space through The Music Space App. By listing their available rooms, studios or performance spaces on the platform, these establishments can tap into a broader network of musicians and music enthusiasts, effectively turning their under-utilised areas into profitable assets. 
+
+Target Audiences:
+
+The app targets musicians or artists of all levels who seek spaces for practicing their art, they can also collaborate and network with other musicians. It appeals to both local musicians looking to share their spaces and travelling artists in need of private temporary spaces. This service can be expanded into other artistic engagement like dance, theather, visual art, etc.
+
+Benefits for artists (Musician):
+
+1. Access to diverse spaces for music making
+2. Convenience and Flexibility 
+3. Cost-Effective Solutions
+4. Opportunities for Collaborations
+5. Exploration of new locations
+6. User-Generated Content
+7. Network and Industry Exposure 
+8. User Reviews and Recommendations
+9. Supportive Music Community
+10. Enhanced Creativity and Inspiration
+11. Access to Professional Equipment
+12. Community Events
+
+Benefits for music space providers:
+
+1. Additional Revenue Stream (hourly/daily/weekly rates)
+2. Optimal Space Utilisation (specialised spaces: soundproof room, recording studios, rehearsal hall; extra charges for equipment rental)
+3. Expanded Reach 
+4. Promotion and Exposure (programs: classes, work opportunities, workshops, masterclasses)
+5. Networking Opportunities 
+6. Feedback and Improvements
+7. Community Engagement 
+8. Justifiable Flexible Pricing (Premium subscription/membership plans)
+9. Enhanced Reputation 
+10. Ads and Sponsorship
 
 ## Table of Contents
 
