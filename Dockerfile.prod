@@ -10,11 +10,11 @@ RUN npm install
 COPY . .
 # ENV variables
 ENV NODE_ENV production
-ENV DB_NAME music_space_prod
-ENV DB_HOST music-space-my-sg-do-user-14390998-0.b.db.ondigitalocean.com
+ENV DB_NAME melkro-prod-db
+ENV DB_HOST melkro-db-sg-do-user-14390998-0.c.db.ondigitalocean.com
 ENV DB_PORT 25060
 ENV DB_USER doadmin
-ENV DB_PASSWORD AVNS_bnsctmn7Ga0Aod3SrC7
+ENV DB_PASSWORD AVNS_mtGhXstZIBclC1d9SRp
 ENV PORT 8080
 ENV SECRET_KEY 123456
 ENV MAILGUN_DOMAIN sandboxcb1e782648fe45beb4f0529824fde793.mailgun.org
